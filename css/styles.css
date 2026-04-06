@@ -1,73 +1,39 @@
-/* CSS THEME ADJ */
-:root {
-    --primary-color: #1a1a1a;
-    --secondary-color: #6c757d;
-    --green-accent: #dfff6f;
-    --blue-accent: #75adf6;
-    --light-bg-color: #f8f9fa;
-    --white: #ffffff;
-    --bkgnd: #ffffff;
-    --light-blue: #e3f1fd;
-    --border-radius: 0.5rem;
-    --transition-speed: 0.3s;
-    font-size: 100%;
+/* Universal Settings */
+*,*::before,*::after{ /* everything before and after */
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+  /* outline: 1px dashed #ffff20; */
 }
 
-/* MARGINS AND PADDING */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+html {
+  font-size: 16px;                    /* 1 rem used on the page == 16px  */
 }
 
 body {
+  background-image: url("../imgs/gradient.jpeg");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size:cover;
+  background-attachment: fixed;
+  background-color: rgba(255, 255, 255, 0.15);
+  background-blend-mode: overlay;
+  font-family: "Atkinson Hyperlegible", sans-serif;
+}
+
+a {
     font-family: "Atkinson Hyperlegible", sans-serif;
-    line-height: 1.6rem;
-    background-color: var(--bkgnd);
-    color: var(--primary-color);
-    scroll-behavior: smooth;
-}
-
-/* REUSABLE COMPONENTS */
-.section-padding {
-    padding: 5rem 1.25rem;
-    max-width: 75rem;
-    margin: 0 auto;
-}
-
-h2 {
-    font-size: 2.5rem;
-    text-align: center;
-    margin-bottom: 3.75rem;
-    color: var(--primary-color);
 }
 
 /* --- NAVIGATION --- */
-nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.9735rem 1.25rem;
-    background-color: var(--white);
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
 
-nav a {
-    margin: 0 0.9375rem;
-    text-decoration: none;
-    color: var(--primary-color);
-    font-weight: 600;
-    transition: color var(--transition-speed);
-}
 
-nav a:hover {
-    color: var(--blue-accent);
-}
+
 
 /* --- LANDING PAGE --- */
+
+
+
 
 /* --- LEARN --- */
 
@@ -77,26 +43,12 @@ nav a:hover {
 
 /* --- FOOTER --- */
 
-footer {
-    text-align: center;
-    padding: 1.25rem;
-    border-top: 0.0625rem solid var(--light-bg-color);
-    background-color: var(--white);
-}
 
-footer div a {
-    text-decoration: none;
-    color: var(--secondary-color);
-    transition: color var(--transition-speed);
-    margin: 0 0.625rem;
-}
 
-footer div a:hover {
-    color: var(--blue-accent);
-}
-
-footer p {
-    margin-top: 0.625rem;
-    font-size: 0.8rem;
-    color: var(--secondary-color);
+/* --- MEDIA QUERIES --- */
+@media (min-width: 768px) {
+  .jumbotron {
+    padding-top: calc(var(--jumbotron-padding-y) * 2);
+    padding-bottom: calc(var(--jumbotron-padding-y) * 2);
+  }
 }

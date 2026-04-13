@@ -1,0 +1,22 @@
+# Secrets
+.env
+
+# Backend build artifacts
+backend/target/
+
+# Maven wrapper cache
+backend/.mvn/repository/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

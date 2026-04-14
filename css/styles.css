@@ -29,6 +29,10 @@ a {
   font-family: "Atkinson Hyperlegible", sans-serif;
 }
 
+.btn-primary {
+  --bs-btn-bg: #497CFC !important;
+}
+
 /* --- NAVIGATION --- */
 
 

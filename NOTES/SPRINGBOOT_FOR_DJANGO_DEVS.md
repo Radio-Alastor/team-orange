@@ -30,14 +30,15 @@ You already know Django. This tutorial maps every concept you know onto what was
 Django                          Spring Boot
 ──────────────────────────────  ──────────────────────────────────────────
 myproject/                      com/silverguide/backend/
-  settings.py                     SilverGuideApplication.java   ← entry point
+  wsgi.py                         SilverGuideApplication.java    ← entry point
   urls.py                         controller/AuthController.java ← views/urls
-  wsgi.py                         service/AuthService.java       ← business logic
-myapp/                            entity/User.java               ← models
-  models.py                       repository/UserRepository.java ← ORM queries
-  views.py                        dto/RegisterRequest.java       ← serializers
-  serializers.py                  config/SecurityConfig.java     ← settings
-  urls.py                         security/JwtAuthFilter.java    ← middleware
+  settings.py                     config/SecurityConfig.java     ← settings
+myapp/
+  models.py                       entity/User.java               ← models
+  views.py                        repository/UserRepository.java ← ORM queries
+  views.py                        service/AuthService.java       ← business logic
+  serializers.py                  dto/RegisterRequest.java       ← serializers
+  [middleware]                    security/JwtAuthFilter.java    ← middleware
 requirements.txt              pom.xml
 ```
 

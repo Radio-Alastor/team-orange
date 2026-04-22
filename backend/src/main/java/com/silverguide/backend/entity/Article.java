@@ -28,7 +28,8 @@ public class Article {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "content", columnDefinition = "TEXT")
+    @Lob
+    @Column(name = "content", columnDefinition = "MEDIUMTEXT")
     private String content;
 
     @Column(name = "summary")

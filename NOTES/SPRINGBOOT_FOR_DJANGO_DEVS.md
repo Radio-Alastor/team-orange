@@ -14,7 +14,7 @@ You already know Django. This tutorial maps every concept you know onto what was
 | Entry point | `manage.py runserver` | `main()` in `SilverGuideApplication.java` |
 | Config file | `settings.py` | `application.properties` + `@Configuration` classes |
 | ORM | Django ORM | JPA / Hibernate |
-| Migrations | `makemigrations` / `migrate` | Auto via `ddl-auto=update` (dev) or Flyway/Liquibase (prod) |
+| Migrations | `makemigrations` / `migrate` | Flyway (versioned SQL scripts); Hibernate validates schema |
 | Views | `views.py` | `@RestController` classes |
 | URL routing | `urls.py` | `@RequestMapping` annotations on controllers |
 | Forms / Serializers | DRF `Serializer` | DTOs (plain classes) + Bean Validation |
@@ -104,6 +104,8 @@ spring.datasource.username=${DB_USERNAME:sguser}
 spring.datasource.password=${DB_PASSWORD:sgpassword}
 app.cors.allowed-origins=${CORS_ALLOWED_ORIGINS:http://localhost:5500}
 app.jwt.secret=${JWT_SECRET:some-long-key}
+app.jwt.expiration-ms=${JWT_EXPIRATION_MS:900000}         # access token: 15 min
+app.jwt.refresh-expiration-ms=${JWT_REFRESH_EXPIRATION_MS:604800000}  # refresh token: 7 days
 ```
 
 The `${VAR:default}` syntax is Spring's version of `os.environ.get('VAR', 'default')`.
@@ -155,24 +157,52 @@ public class User implements UserDetails {      // UserDetails = Django's Abstra
 **Key differences:**
 - `@Data` / `@Builder` / `@NoArgsConstructor` are Lombok — they generate Java boilerplate at compile time. Without Lombok you'd write 50+ lines of getters/setters by hand.
 - `implements UserDetails` is the Spring Security equivalent of extending `AbstractUser`. It forces you to implement methods like `getAuthorities()`, `getPassword()`, `isEnabled()`.
-- There are no separate migration files. With `spring.jpa.hibernate.ddl-auto=update`, Hibernate inspects your entity classes at startup and updates the DB schema automatically.
+- Schema is managed by Flyway migration scripts (see Section 6). Hibernate's role is limited to `ddl-auto=validate` — it checks that the DB matches your entities at startup but never touches the schema itself.
 
 ---
 
 ## 6. Migrations
 
-In Django:
+**Django:**
 ```bash
-python manage.py makemigrations
-python manage.py migrate
+python manage.py makemigrations   # generates a migration file from model changes
+python manage.py migrate          # applies pending migrations to the DB
 ```
 
-In this Spring Boot project, `application.properties` has:
+**Spring Boot — Flyway:**
+
+This project uses [Flyway](https://flywaydb.org/), which is the closest Spring equivalent to Django's migration system. Unlike `makemigrations`, Flyway does **not** auto-generate migration files — you write the SQL yourself.
+
+```
+backend/src/main/resources/db/migration/
+  V1__Initial_schema.sql    ← applied first  (like 0001_initial.py)
+  V2__Add_refresh_tokens.sql ← applied next  (like 0002_add_refresh_tokens.py)
+```
+
+Flyway tracks which scripts have already run in a `flyway_schema_history` table and only applies new ones on startup — exactly like Django's `django_migrations` table.
+
+**application.properties:**
 ```properties
-spring.jpa.hibernate.ddl-auto=update
+spring.flyway.enabled=true
+spring.flyway.locations=classpath:db/migration
+
+# Hibernate validates but does NOT touch the schema
+spring.jpa.hibernate.ddl-auto=validate
 ```
 
-This tells Hibernate to automatically create/alter tables to match entity classes on every startup. It's convenient for development but **not recommended for production** — in prod you'd use Flyway or Liquibase (the Spring equivalents of Django migrations).
+The `validate` setting tells Hibernate to check at startup that your `@Entity` classes match the actual DB tables. If you add a field to an entity but forget to write a migration, the app fails immediately at boot rather than silently at query time.
+
+**Workflow when you add a new table or column:**
+1. Create a new file: `V3__Your_description.sql`
+2. Write the SQL manually (Flyway will run it on next startup)
+3. Update the corresponding `@Entity` class
+4. Rebuild — Flyway applies the migration, Hibernate validates it matches
+
+**To reset the DB entirely** (dev only):
+```bash
+docker-compose down -v && docker-compose up --build
+```
+This drops the volume, causing Flyway to re-run all migrations from V1.
 
 ---
 
@@ -450,13 +480,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 }
 ```
 
+### Refresh tokens and logout
+
+The initial JWT-only approach issues a single long-lived token with no revocation. This mirrors the problem Django's `TokenAuthentication` has: a stolen token stays valid until it expires. Django SimpleJWT solves this with a refresh token pattern — and so does this backend.
+
+**How it works:**
+- A short-lived **access JWT** (15 min) — stateless, used on every API request
+- A long-lived **refresh token** (7 days) — stored in the `refresh_tokens` DB table, used only to get a new access JWT
+- Token **rotation** on refresh — old refresh token is revoked, a new one is issued
+- **Logout** revokes the refresh token in the DB, preventing further renewal
+
+```
+POST /api/auth/login
+← { token: "eyJ...", refreshToken: "uuid-v4-string", userId, name, email }
+
+[15 min later, access token expires]
+
+POST /api/auth/refresh   { "refreshToken": "uuid-v4-string" }
+← { token: "eyJ...(new)", refreshToken: "new-uuid", ... }
+  (old refresh token is now revoked in DB)
+
+POST /api/auth/logout    { "refreshToken": "new-uuid" }
+← 204 No Content
+  (refresh token revoked — no more renewal possible)
+```
+
+The `refresh_tokens` table is queryable — you can see all active sessions, when they expire, and when they were revoked. This is exactly like Django's `authtoken_token` or SimpleJWT's `OutstandingToken` tables.
+
+If a refresh token is already revoked or expired, `POST /api/auth/refresh` returns **401** via `TokenException` → `GlobalExceptionHandler`.
+
 ### Access rules (`config/SecurityConfig.java`)
 
 This is the equivalent of Django's `@login_required` decorator, but applied globally:
 
 ```java
 http.authorizeHttpRequests(auth -> auth
-    .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login").permitAll()  // public
+    .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login",
+                     "/api/auth/refresh", "/api/auth/logout").permitAll()  // public
     .anyRequest().authenticated()  // everything else requires a valid JWT
 )
 .sessionManagement(session ->
@@ -587,10 +647,11 @@ When you run `docker-compose up`:
 
 1. MySQL starts and becomes healthy
 2. Spring Boot JAR starts
-3. Hibernate scans all `@Entity` classes and runs `ddl-auto=update` (creates/alters tables)
-4. Spring scans for `@Component`, `@Service`, `@Repository`, `@Controller` beans and wires them together
-5. `JwtAuthenticationFilter` is registered into the filter chain
-6. Tomcat starts listening on port 8080
+3. **Flyway** runs any pending migration scripts (e.g. `V1__Initial_schema.sql`, `V2__Add_refresh_tokens.sql`) against the DB — equivalent to `python manage.py migrate`
+4. **Hibernate** validates that `@Entity` classes match the DB schema (`ddl-auto=validate`) — fails fast if there's a mismatch
+5. Spring scans for `@Component`, `@Service`, `@Repository`, `@Controller` beans and wires them together
+6. `JwtAuthenticationFilter` is registered into the filter chain
+7. Tomcat starts listening on port 8080
 
 The equivalent Django sequence: `migrate` → `runserver` → Django loads `INSTALLED_APPS`, registers middleware, loads URL patterns.
 
@@ -614,7 +675,9 @@ The equivalent Django sequence: `migrate` → `runserver` → Django loads `INST
 | `@login_required` | `.anyRequest().authenticated()` in SecurityConfig |
 | `django.contrib.auth` | Spring Security |
 | `is_active = False` | `deletedAt != null` → `isEnabled() = false` |
+| SimpleJWT refresh token | `RefreshToken` entity in `refresh_tokens` table |
+| SimpleJWT `TokenBlacklistView` | `POST /api/auth/logout` → sets `revoked_at` in DB |
 | `settings.py` | `application.properties` + `@Configuration` beans |
-| `makemigrations` / `migrate` | `ddl-auto=update` (dev) / Flyway (prod) |
+| `makemigrations` / `migrate` | Flyway versioned SQL scripts (`V1__`, `V2__`, …) |
 | `on_delete=CASCADE` | `cascade = CascadeType.ALL` |
 | `select_related` | `fetch = FetchType.LAZY` (load on access) |

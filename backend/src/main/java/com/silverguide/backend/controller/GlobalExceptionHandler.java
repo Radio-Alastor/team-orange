@@ -1,5 +1,6 @@
 package com.silverguide.backend.controller;
 
+import com.silverguide.backend.exception.TokenException;
 import com.silverguide.backend.service.AuthService.EmailAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -16,6 +17,13 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(TokenException.class)
+    public ProblemDetail handleTokenException(TokenException ex) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
+        pd.setTitle("Invalid Token");
+        return pd;
+    }
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ProblemDetail handleEmailConflict(EmailAlreadyExistsException ex) {

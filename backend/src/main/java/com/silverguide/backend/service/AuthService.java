@@ -2,8 +2,11 @@ package com.silverguide.backend.service;
 
 import com.silverguide.backend.dto.AuthResponse;
 import com.silverguide.backend.dto.LoginRequest;
+import com.silverguide.backend.dto.RefreshRequest;
 import com.silverguide.backend.dto.RegisterRequest;
+import com.silverguide.backend.entity.RefreshToken;
 import com.silverguide.backend.entity.User;
+import com.silverguide.backend.repository.RefreshTokenRepository;
 import com.silverguide.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,8 +19,10 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final RefreshTokenService refreshTokenService;
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse register(RegisterRequest request) {
@@ -34,7 +39,8 @@ public class AuthService {
         userRepository.save(user);
 
         String token = jwtService.generateToken(user);
-        return buildAuthResponse(token, user);
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
+        return buildAuthResponse(token, refreshToken.getToken(), user);
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -46,12 +52,31 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         String token = jwtService.generateToken(user);
-        return buildAuthResponse(token, user);
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
+        return buildAuthResponse(token, refreshToken.getToken(), user);
     }
 
-    private AuthResponse buildAuthResponse(String token, User user) {
+    public AuthResponse refresh(RefreshRequest request) {
+        RefreshToken oldToken = refreshTokenService.verifyRefreshToken(request.getRefreshToken());
+        User user = oldToken.getUser();
+
+        refreshTokenService.revokeRefreshToken(oldToken);
+
+        String newAccessToken = jwtService.generateToken(user);
+        RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(user);
+        return buildAuthResponse(newAccessToken, newRefreshToken.getToken(), user);
+    }
+
+    public void logout(RefreshRequest request) {
+        refreshTokenRepository.findByToken(request.getRefreshToken())
+                .filter(rt -> rt.getRevokedAt() == null)
+                .ifPresent(refreshTokenService::revokeRefreshToken);
+    }
+
+    private AuthResponse buildAuthResponse(String token, String refreshToken, User user) {
         return AuthResponse.builder()
                 .token(token)
+                .refreshToken(refreshToken)
                 .userId(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())

@@ -2,10 +2,10 @@ package com.silverguide.backend.controller;
 
 import com.silverguide.backend.dto.AuthResponse;
 import com.silverguide.backend.dto.LoginRequest;
+import com.silverguide.backend.dto.RefreshRequest;
 import com.silverguide.backend.dto.RegisterRequest;
 import com.silverguide.backend.entity.User;
 import com.silverguide.backend.service.AuthService;
-import com.silverguide.backend.service.JwtService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +19,17 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refresh(@Valid @RequestBody RefreshRequest request) {
+        return ResponseEntity.ok(authService.refresh(request));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@Valid @RequestBody RefreshRequest request) {
+        authService.logout(request);
+        return ResponseEntity.noContent().build();
+    }
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {

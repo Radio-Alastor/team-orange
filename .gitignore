@@ -1,11 +1,6 @@
 # Secrets
 .env
 
-# Backend build artifacts
-backend/target/
-
-# Maven wrapper cache
-backend/.mvn/repository/
 
 # IDE files
 .idea/
@@ -20,3 +15,33 @@ Thumbs.db
 
 # Logs
 *.log
+
+
+
+
+# Backend build artifacts
+backend/target/
+
+# Maven wrapper cache
+backend/.mvn/repository/
+
+# Frontend
+node_modules/
+dist/
+
+# React Router
+.react-router/
+build/
+
+# Environment variable variants
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# TypeScript
+*.tsbuildinfo
+
+# pnpm
+pnpm-debug.log*
+

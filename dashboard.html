@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silver Guide</title>
+
+    <!-- Import Bootstrap CSS-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!-- Apply fonts imported from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- External stylesheet for the website -->
+    <link rel="stylesheet" href="./css/styles.css">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+    </style>
+
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <!-- Start of Navigation -->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light border-bottom" style="background-color: #f8f9fa;">
+        <div class="container">
+            <!-- logo -->
+            <a class="me-3" href="#">
+                <img src="./imgs/logo.svg" alt="SilverGuide Logo" width="60" height="60"
+                    class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- links to other pages -->
+            <ul class="nav justify-content-end">
+                <li class="nav-item dropdown ">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                        aria-expanded="false">
+                        <img src="./imgs/admin-icon.svg" alt="admin profile image" width="50" height="50" class="p-2">
+                        Admin Username
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">Notifications</a></li>
+                        <li><a class="dropdown-item" href="#">Log out</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- End of Navigation -->
+
+    <!-- TODO Start of Vertical Pills -->
+    <main class="flex-grow-1 container bg-white py-lg-5">
+        <section class="container" style="max-height: 450px; overflow-y: auto;">
+            <div class="row">
+                <div class="col-3">
+                    <nav id="navbar-example3" class="h-100 flex-column align-items-stretch pe-4 border-end">
+                        <nav class="nav nav-pills flex-column">
+                            <a class="nav-link" href="#dashboard">Dashboard</a>
+                            <a class="nav-link" href="#articles-content">Articles</a>
+                            <a class="nav-link" href="#users">Users</a>
+                        </nav>
+                    </nav>
+                </div>
+
+                <div class="col-9 px-5">
+                    <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-smooth-scroll="true"
+                        class="scrollspy-example-2" tabindex="0">
+                        <div id="dashboard">
+                            <h4>Dashboard</h4>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi ex similique fugit
+                                repudiandae cumque ipsa, odit officiis, soluta dicta voluptatem voluptatum dolorem et.
+                                Corporis quia laborum, nesciunt architecto provident placeat?</p>
+                            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                                <div class="col">
+                                    <div class="card mb-4 rounded-3 shadow-sm">
+                                        <div class="card-header py-3">
+                                            <h4 class="my-0 fw-normal">Likes</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <h1 class="card-title card-title">10,234</h1>
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis,
+                                                non.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card mb-4 rounded-3 shadow-sm">
+                                        <div class="card-header py-3">
+                                            <h4 class="my-0 fw-normal">Comments</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <h1 class="card-title pricing-card-title">15,342</h1>
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam,
+                                                quisquam.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card mb-4 rounded-3 shadow-sm">
+                                        <div class="card-header py-3">
+                                            <h4 class="my-0 fw-normal">Shares</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <h1 class="card-title pricing-card-title">17,341</h1>
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam,
+                                                quisquam.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="articles-content">
+                            <h4>Articles</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, doloremque?</p>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button class="btn btn-primary me-md-2" type="button">&plus; Create Article</button>
+                            </div>
+                            <div class="table-responsive m-lg-1">
+                                <table class="table caption-top">
+                                    <caption>List of users</caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Title</th>
+                                            <th scope="col">Category</th>
+                                            <th scope="col">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>How to: Report potential scams</td>
+                                            <td>Scams</td>
+                                            <td>dd/mm/yy</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">2</th>
+                                            <td>How to: Find your IMEI or MEID Number</td>
+                                            <td>Phones</td>
+                                            <td>dd/mm/yy</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">3</th>
+                                            <td>Why people fall prey to scams?</td>
+                                            <td>Scams</td>
+                                            <td>dd/mm/yy</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        <div id="users">
+                            <h4>Users</h4>
+                            <p>Manage accounts, roles and permissions here</p>
+                            <div class="table-responsive m-lg-1">
+                                <table class="table caption-top">
+                                    <caption>List of users</caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Username</th>
+                                            <th scope="col">Permissions</th>
+                                            <th scope="col">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>@admin-username</td>
+                                            <td>admin</td>
+                                            <td>dd/mm/yy</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">2</th>
+                                            <td>@bobby-butcher</td>
+                                            <td>user</td>
+                                            <td>dd/mm/yy</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">3</th>
+                                            <td>@stephanie-button</td>
+                                            <td>user</td>
+                                            <td>dd/mm/yy</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- End of Vertical Pills -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Start of Footer Section -->
+    <footer class="py-5 border-top" style="background-color: #f8f9fa;">
+        <div class="container">
+            <div class="row">
+                <!-- footer left side -->
+                <div class="col-md-6 text-start">
+                    <a class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none" href="#">
+                        <img src="./imgs/logo.svg" alt="SilverGuide Logo" width="60" height="60"
+                            class="d-inline-block align-text-top">
+                    </a>
+                    <h6 class="text-body-secondary">Helping you navigate the digital world</h6>
+                    <p class="text-muted">&copy; 2026 The Silver Guide Website, All rights reserved.</p>
+                </div>
+
+                <!-- footer right side -->
+                <div class="col-md-6 text-end">
+                    <ul class="list-unstyled mb-0">
+                        <li class="nav-item mb-2">
+                            <a href="#contact" class="nav-link p-0 text-body-secondary">Contact Us</a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="#about" class="nav-link p-0 text-body-secondary">About Us</a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="#faq" class="nav-link p-0 text-body-secondary">FAQs</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End of Footer Section -->
+
+    <!-- Import Bootstrap javascript library -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+        </script>
+
+
+
+
+</body>
+
+</html>

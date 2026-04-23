@@ -1,8 +1,12 @@
+import './simple-image.css';
+
 export interface SimpleImageData {
   url: string;
 }
 
 export default class SimpleImage {
+  private data: SimpleImageData;
+
   static get toolbox() {
     return {
       title: "Image",
@@ -10,13 +14,43 @@ export default class SimpleImage {
     };
   }
 
-  render(): HTMLInputElement {
-    return document.createElement("input");
+  constructor({ data }: { data: SimpleImageData }) {
+    this.data = data;
   }
 
-  save(blockContent: HTMLInputElement): SimpleImageData {
-    return {
-      url: blockContent.value,
-    };
+  render(): HTMLDivElement {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'simple-image';
+
+    const input = document.createElement('input');
+    input.type = 'url';
+    input.placeholder = 'Paste an image URL…';
+    input.value = this.data?.url ?? '';
+
+    const preview = document.createElement('img');
+    preview.src = this.data?.url ?? '';
+    preview.style.cssText = 'max-width:100%; display:block; margin-top:8px;';
+    preview.hidden = !this.data?.url;
+
+    input.addEventListener('input', () => {
+      preview.src = input.value;
+      preview.hidden = !input.value;
+    });
+
+    wrapper.appendChild(input);
+    wrapper.appendChild(preview);
+    return wrapper;
+  }
+
+  save(blockContent: HTMLDivElement): SimpleImageData {
+    const input = blockContent.querySelector('input') as HTMLInputElement;
+    const url = input?.value.trim() ?? '';
+
+    try {
+      new URL(url);
+      return { url };
+    } catch {
+      return this.data;
+    }
   }
 }

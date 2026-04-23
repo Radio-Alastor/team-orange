@@ -137,7 +137,10 @@ export default function ArticleEditor() {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    let instance: { destroy: () => void } | null = null;
+
+    // NOTE: This is to circumvent strict mode double-invoking in development which causes Editor.js 
+    // to throw an error about being initialized twice. We want to initialize it only once.
+    let cancelled = false;
 
     async function initEditor() {
       const EditorJS = (await import("@editorjs/editorjs")).default;
@@ -147,6 +150,8 @@ export default function ArticleEditor() {
       const Warning = (await import("@editorjs/warning")).default;
       const Delimiter = (await import("@editorjs/delimiter")).default;
       const { default: SimpleImage } = await import("../tools/SimpleImage");
+
+      if (cancelled) return;
 
       const draft = typeof window !== "undefined" ? localStorage.getItem("articleEditorDraft") : null;
 
@@ -180,12 +185,14 @@ export default function ArticleEditor() {
         },
       });
 
-      instance = ed;
       editorInstanceRef.current = ed;
     }
 
     initEditor();
-    return () => { instance?.destroy(); };
+    return () => {
+      cancelled = true;
+      editorInstanceRef.current?.destroy();
+    };
   }, []);
 
   async function generateHTMLOutput() {

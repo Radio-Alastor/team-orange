@@ -44,4 +44,4 @@ build/
 
 # pnpm
 pnpm-debug.log*
-
+.pnpm-store/

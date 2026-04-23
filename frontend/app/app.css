@@ -1,10 +1,19 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 
+
+/**********************************************************************/
+/** Desktop CSS Styles **/
+/**********************************************************************/
+
+/*----------------------------------*/
+ /* Universal Styling */
+/*----------------------------------*/
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
+
 
 html { font-size: 16px; }
 
@@ -21,6 +30,41 @@ body {
 
 a { font-family: "Atkinson Hyperlegible", sans-serif; }
 
+/*----------------------------------*/
+ /* Navbar Styling */
+/*----------------------------------*/
+.navbar-nav .nav-link {
+  position: relative;
+  color: #0d6efd !important; /* Bootstrap primary blue */
+  font-weight: 500;
+  transition: color 0.15s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: #0a58ca !important; /* Darker blue */
+}
+
+.navbar-nav .nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #0d6efd;
+  transition: width 0.15s ease-in-out;
+}
+
+.navbar-nav .nav-link.active::after {
+  width: 100%;
+}
+
+
+
+/*----------------------------------*/
+ /* Article Styling */
+/*----------------------------------*/
 /* Articles page */
 .article-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -40,7 +84,6 @@ a { font-family: "Atkinson Hyperlegible", sans-serif; }
 .category-badge { font-size: 0.9rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05rem; }
 .btn-read { border-radius: 2rem; padding: 0.75rem 2rem; font-weight: 700; }
 
-/* AI Tutorial / article pages */
 .article-container {
   max-width: 900px;
   background-color: white;
@@ -79,7 +122,9 @@ a { font-family: "Atkinson Hyperlegible", sans-serif; }
   border: 1px dashed #dee2e6;
 }
 
-/* Article editor */
+/*----------------------------------*/
+/* Article Editor Styling */
+/*----------------------------------*/
 .editor-wrapper {
   border: 2px solid #dee2e6;
   border-radius: 1rem;
@@ -97,6 +142,9 @@ a { font-family: "Atkinson Hyperlegible", sans-serif; }
   color: #6c757d;
 }
 
+/*----------------------------------*/
+/* About Page Styling */
+/*----------------------------------*/
 /* About page images */
 .aboutimage1 {
   background-image: url("/imgs/AboutPageImage1.jpg");
@@ -123,7 +171,7 @@ a { font-family: "Atkinson Hyperlegible", sans-serif; }
   background-position: center center;
 }
 
-/* About page team portraits */
+/* About page designs */
 .portrait-container {
   position: relative;
   width: 100%;
@@ -144,6 +192,56 @@ a { font-family: "Atkinson Hyperlegible", sans-serif; }
 .portrait-container:hover .static-img  { opacity: 0; }
 .portrait-container:hover .team-video  { opacity: 1; }
 
-@media (max-width: 576px) {
+
+
+
+/**********************************************************************/
+/** Media Queries **/
+/**********************************************************************/
+
+/*----------------------------------*/
+/* About page images */
+/*----------------------------------*/
+/* Generates carousel like behavior for member cards on mobile view */
+@media (max-width: 48rem) {
   .overflow-auto { display: flex; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+}
+
+/*----------------------------------*/
+/* Mobile Navbar */
+/*----------------------------------*/
+@media (max-width: 48rem) {
+  .navbar-toggler:focus {
+    box-shadow: none;
+  }
+
+  .navbar-toggler {
+    border: none;
+  }
+
+  .navbar-collapse {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-top: 0.5rem;
+  }
+
+  .navbar-nav {
+    flex-direction: column !important;
+    align-items: center;
+    text-align: center;
+  }
+
+  .navbar .d-flex {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1rem !important;
+  }
+
+  .navbar .btn {
+    width: 100%;
+    margin: 0 !important;
+  }
 }

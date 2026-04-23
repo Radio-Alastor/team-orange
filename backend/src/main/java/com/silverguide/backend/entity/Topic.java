@@ -25,11 +25,14 @@ public class Topic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    @Column(name = "topic_name", nullable = false, unique = true, length = 50)
+    private String topicName;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 500)
     private String description;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)

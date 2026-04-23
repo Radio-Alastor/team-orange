@@ -28,27 +28,29 @@ public class Article {
     @Column(name = "title", nullable = false)
     private String title;
 
+    @Column(name = "subtitle", length = 500)
+    private String subtitle;
+
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
     @Lob
-    @Column(name = "content", columnDefinition = "MEDIUMTEXT")
+    @Column(name = "content", columnDefinition = "MEDIUMTEXT", nullable = false)
     private String content;
 
-    @Column(name = "summary")
-    private String summary;
-
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "img_url")
+    private String imgUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
-    private User author;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topic_id")
     private Topic topic;
 
-    @Column(name = "published", nullable = false)
-    @Builder.Default
-    private boolean published = false;
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)

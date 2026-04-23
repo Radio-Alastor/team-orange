@@ -30,10 +30,15 @@ public class AuthService {
             throw new EmailAlreadyExistsException("Email already registered: " + request.getEmail());
         }
 
+        // Check if this is the first user ever registered
+        boolean isFirstUser = userRepository.count() == 0;
+
         User user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .isSuperuser(isFirstUser) // Make admin if first
+                .isStaff(isFirstUser)     // Make staff if first
                 .build();
 
         userRepository.save(user);

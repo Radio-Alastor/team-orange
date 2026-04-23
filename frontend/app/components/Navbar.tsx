@@ -1,57 +1,112 @@
+import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router";
+import { getUser, clearAuth } from "../lib/auth";
+import ProfileModal from "./ProfileModal";
 
 export default function Navbar() {
+  const [user, setUser] = useState<ReturnType<typeof getUser>>(null);
+  const [showProfile, setShowProfile] = useState(false);
+
+  useEffect(() => {
+    setUser(getUser());
+  }, []);
+
+  async function handleLogout() {
+    const refreshToken = sessionStorage.getItem("sg_refresh_token");
+    try {
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refreshToken }),
+      });
+    } catch {
+      // best-effort
+    }
+    clearAuth();
+    window.location.href = "/";
+  }
+
   return (
-    <nav className="navbar sticky-top navbar-expand-md navbar-light border-bottom" style={{ backgroundColor: '#f8f9fa' }}>
-      <div className="container">
-        <Link className="me-3" to="/">
-          <img src="/imgs/logo.svg" width={60} height={60} className="d-inline-block align-text-top" alt="SilverGuide Logo" />
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarMain"
-          aria-controls="navbarMain"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-        <div className="collapse navbar-collapse" id="navbarMain">
-          <ul className="navbar-nav align-items-center mx-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <NavLink
-                className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
-                to="/"
-                end
-              >
-                Home
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
-                to="/articles"
-              >
-                Learn
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
-                to="/about"
-              >
-                About
-              </NavLink>
-            </li>
-          </ul>
-          <div className="d-flex align-items-center gap-2">
-            <Link className="btn btn-outline-primary btn-sm" to="/login">Sign In</Link>
-            <Link className="btn btn-primary btn-sm" to="/register">Register</Link>
+    <>
+      <nav className="navbar sticky-top navbar-expand-md navbar-light border-bottom" style={{ backgroundColor: '#f8f9fa' }}>
+        <div className="container">
+          <Link className="me-3" to="/">
+            <img src="/imgs/logo.svg" width={60} height={60} className="d-inline-block align-text-top" alt="SilverGuide Logo" />
+          </Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMain"
+            aria-controls="navbarMain"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+          <div className="collapse navbar-collapse" id="navbarMain">
+            <ul className="navbar-nav align-items-center mx-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <NavLink
+                  className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+                  to="/"
+                  end
+                >
+                  Home
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+                  to="/articles"
+                >
+                  Learn
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+                  to="/about"
+                >
+                  About
+                </NavLink>
+              </li>
+              {user?.staff && (
+                <li className="nav-item">
+                  <NavLink
+                    className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+                    to="/editor"
+                  >
+                    Editor
+                  </NavLink>
+                </li>
+              )}
+            </ul>
+            <div className="d-flex align-items-center gap-2">
+              {user ? (
+                <>
+                  <button
+                    className="btn btn-link p-0"
+                    title="Profile"
+                    onClick={() => setShowProfile(true)}
+                  >
+                    <i className="bi bi-person-circle fs-4" />
+                  </button>
+                  <button className="btn btn-outline-secondary btn-sm" onClick={handleLogout}>
+                    Log Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link className="btn btn-outline-primary btn-sm" to="/login">Sign In</Link>
+                  <Link className="btn btn-primary btn-sm" to="/register">Register</Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+      {showProfile && <ProfileModal onClose={() => setShowProfile(false)} />}
+    </>
   );
 }

@@ -1,8 +1,34 @@
 import { useEffect, useRef, useState } from "react";
+import { redirect } from "react-router";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { apiFetch } from "../lib/api";
 import { getToken } from "../lib/auth";
+
+export async function clientLoader() {
+  const token = getToken();
+  if (!token) throw redirect('/login');
+
+  const res = await apiFetch('/api/auth/me', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw redirect('/login');
+
+  const me = await res.json();
+  if (!me.staff) throw redirect('/login');
+
+  return null;
+}
+
+export function HydrateFallback() {
+  return (
+    <>
+      <Navbar />
+      <div className="container py-5 text-center text-muted">Loading…</div>
+      <Footer />
+    </>
+  );
+}
 
 export function meta() {
   return [{ title: "Silver Guide - Article Editor" }];

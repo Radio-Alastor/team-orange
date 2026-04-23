@@ -4,11 +4,14 @@ export interface AuthData {
   userId: string;
   name: string;
   email: string;
+  staff: boolean;
 }
 
-export const getToken = () => sessionStorage.getItem('sg_token');
+const isBrowser = typeof window !== 'undefined';
+
+export const getToken = () => isBrowser ? sessionStorage.getItem('sg_token') : null;
 export const getUser = (): Omit<AuthData, 'token' | 'refreshToken'> | null =>
-  JSON.parse(sessionStorage.getItem('sg_user') ?? 'null');
+  isBrowser ? JSON.parse(sessionStorage.getItem('sg_user') ?? 'null') : null;
 
 export function setAuth(data: AuthData) {
   sessionStorage.setItem('sg_token', data.token);
@@ -17,6 +20,7 @@ export function setAuth(data: AuthData) {
     userId: data.userId,
     name: data.name,
     email: data.email,
+    staff: data.staff,
   }));
 }
 

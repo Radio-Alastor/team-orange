@@ -1,15 +1,6 @@
-export const CATEGORIES = {
-  tech: { label: "Tech Tutorial", color: "blue" },
-  skill: { label: "Skill Building", color: "green" },
-  warning: { label: "Urgent Warning", color: "red" },
-  scam: { label: "Scam Alert", color: "yellow" },
-} as const;
-
-export type CategoryKey = keyof typeof CATEGORIES;
-
 export const DEFAULT_META = {
   title: "Spotting Phishing Emails",
-  category: "scam" as CategoryKey,
+  topicId: null as number | null,
   subtitle: "",
   description: "Is that email really from your bank? We teach you how to check sender addresses and avoid suspicious links.",
   heroImage: "/imgs/phishing_alert.png",

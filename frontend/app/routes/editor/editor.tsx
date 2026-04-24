@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { redirect } from "react-router";
+import { redirect, useLoaderData } from "react-router";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { apiFetch } from "../../lib/api";
 import { getToken } from "../../lib/auth";
-import { DEFAULT_META, DEFAULT_DATA, type CategoryKey } from "./editorDefaults";
+import { DEFAULT_META, DEFAULT_DATA } from "./editorDefaults";
+import type { Topic } from "./types";
 import ArticleMetaForm from "./ArticleMetaForm";
 import BlockReference from "./BlockReference";
 
@@ -20,7 +21,15 @@ export async function clientLoader() {
   const me = await res.json();
   if (!me.staff) throw redirect("/login");
 
-  return null;
+  let topics: Topic[] = [];
+  try {
+    const topicsRes = await apiFetch("/api/topics");
+    if (topicsRes.ok) topics = await topicsRes.json();
+  } catch {
+    // backend unreachable; topics stays empty
+  }
+
+  return { topics };
 }
 
 export function HydrateFallback() {
@@ -42,12 +51,13 @@ export function meta() {
 }
 
 export default function ArticleEditor() {
+  const { topics } = useLoaderData<typeof clientLoader>();
   const editorRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const editorInstanceRef = useRef<any>(null);
 
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState<CategoryKey>("tech");
+  const [topicId, setTopicId] = useState<number | null>(null);
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
   const [heroImage, setHeroImage] = useState("");
@@ -58,6 +68,7 @@ export default function ArticleEditor() {
     const e: Record<string, string> = {};
     if (!title.trim()) e.title = "Title is required.";
     else if (title.length > 255) e.title = "Title must be 255 characters or fewer.";
+    if (!topicId) e.topicId = "Topic is required.";
     if (subtitle.length > 500) e.subtitle = "Sub Title must be 500 characters or fewer.";
     if (description.length > 1000) e.description = "Summary must be 1000 characters or fewer.";
     if (heroImage.length > 255) e.heroImage = "Hero Image URL must be 255 characters or fewer.";
@@ -123,7 +134,7 @@ export default function ArticleEditor() {
     if (!confirm("This will replace the current content with the example article. Continue?")) return;
     await editorInstanceRef.current?.render(DEFAULT_DATA);
     setTitle(DEFAULT_META.title);
-    setCategory(DEFAULT_META.category);
+    setTopicId(DEFAULT_META.topicId);
     setSubtitle(DEFAULT_META.subtitle);
     setDescription(DEFAULT_META.description);
     setHeroImage(DEFAULT_META.heroImage);
@@ -146,6 +157,7 @@ export default function ArticleEditor() {
     const editorData = await editorInstanceRef.current?.save();
     const payload = {
       title,
+      topicId,
       subtitle,
       summary: description,
       imageUrl: heroImage,
@@ -196,7 +208,7 @@ export default function ArticleEditor() {
 
         <ArticleMetaForm
           title={title} setTitle={setTitle}
-          category={category} setCategory={setCategory}
+          topicId={topicId} setTopicId={setTopicId} topics={topics}
           subtitle={subtitle} setSubtitle={setSubtitle}
           description={description} setDescription={setDescription}
           heroImage={heroImage} setHeroImage={setHeroImage}

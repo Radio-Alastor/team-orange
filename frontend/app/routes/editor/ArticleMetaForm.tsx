@@ -1,10 +1,11 @@
-import type { CategoryKey } from "./editorDefaults";
+import type { Topic } from "./types";
 
 interface Props {
   title: string;
   setTitle: (v: string) => void;
-  category: CategoryKey;
-  setCategory: (v: CategoryKey) => void;
+  topicId: number | null;
+  setTopicId: (v: number | null) => void;
+  topics: Topic[];
   subtitle: string;
   setSubtitle: (v: string) => void;
   description: string;
@@ -18,7 +19,7 @@ interface Props {
 
 export default function ArticleMetaForm({
   title, setTitle,
-  category, setCategory,
+  topicId, setTopicId, topics,
   subtitle, setSubtitle,
   description, setDescription,
   heroImage, setHeroImage,
@@ -32,6 +33,7 @@ export default function ArticleMetaForm({
           <div className="alert alert-danger alert-dismissible" role="alert">
             <ul className="mb-0 ps-3">
               {errors.title && <li>{errors.title}</li>}
+              {errors.topicId && <li>{errors.topicId}</li>}
               {errors.subtitle && <li>{errors.subtitle}</li>}
               {errors.description && <li>{errors.description}</li>}
               {errors.heroImage && <li>{errors.heroImage}</li>}
@@ -55,15 +57,20 @@ export default function ArticleMetaForm({
           <div className="col-md-4">
             <label className="meta-label mb-1">Topics</label>
             <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value as CategoryKey)}
-              className="form-select form-select-lg"
+              value={topicId ?? ""}
+              onChange={(e) => {
+                const val = e.target.value;
+                setTopicId(val === "" ? null : Number(val));
+                onClearError("topicId");
+              }}
+              className={`form-select form-select-lg${errors.topicId ? " is-invalid" : ""}`}
             >
-              <option value="tech">Tech Tutorial</option>
-              <option value="skill">Skill Building</option>
-              <option value="warning">Urgent Warning</option>
-              <option value="scam">Scam Alert</option>
+              <option value="">Select a topic…</option>
+              {topics.map((t) => (
+                <option key={t.id} value={t.id}>{t.topicName}</option>
+              ))}
             </select>
+            {errors.topicId && <div className="invalid-feedback">{errors.topicId}</div>}
           </div>
           <div className="col-12">
             <label className="meta-label mb-1">Sub Title</label>

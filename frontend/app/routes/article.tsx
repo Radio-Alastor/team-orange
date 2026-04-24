@@ -54,8 +54,8 @@ function sanitize(html: string): string {
   });
 }
 
-function safe(html: string) {
-  return { __html: sanitize(html) };
+function safe(html: unknown) {
+  return { __html: sanitize(String(html ?? "")) };
 }
 
 function renderBlocks(blocks: Block[]) {
@@ -77,8 +77,8 @@ function renderBlocks(blocks: Block[]) {
     }
 
     if (type === "list") {
-      const items = (data.items as string[]).map((item, j) => (
-        <li key={j} dangerouslySetInnerHTML={safe(item)} />
+      const items = (data.items as (string | { content: string })[]).map((item, j) => (
+        <li key={j} dangerouslySetInnerHTML={safe(typeof item === "string" ? item : item.content)} />
       ));
       return data.style === "ordered"
         ? <ol key={i} className="mb-4">{items}</ol>

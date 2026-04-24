@@ -1,6 +1,4 @@
 import { Link } from "react-router";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 export function meta() {
   return [{ title: "Silver Guide - Understanding AI Helpers" }];
@@ -9,8 +7,6 @@ export function meta() {
 export default function AiTutorial() {
   return (
     <>
-      <Navbar />
-
       <div className="container py-5 d-flex justify-content-center">
         <article className="article-container">
           {/* Breadcrumb */}
@@ -108,7 +104,6 @@ export default function AiTutorial() {
         </article>
       </div>
 
-      <Footer />
     </>
   );
 }

@@ -1,7 +1,5 @@
 import { Link, redirect, useLoaderData, useNavigate } from "react-router";
 import { apiFetch } from "../lib/api";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import PageSpinner from "../components/PageSpinner";
 import { getToken, getUser } from "../lib/auth";
 
@@ -141,8 +139,6 @@ export default function ArticlePage() {
 
   return (
     <>
-      <Navbar />
-
       <div className="container py-5 d-flex justify-content-center">
         <article className="article-container">
           {/* Breadcrumb */}
@@ -194,7 +190,6 @@ export default function ArticlePage() {
         </article>
       </div>
 
-      <Footer />
     </>
   );
 }

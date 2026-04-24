@@ -1,6 +1,4 @@
 import { useRef } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 export function meta() {
   return [{ title: "Silver Guide - About" }];
@@ -40,8 +38,6 @@ function TeamCard({ member }: { member: (typeof TEAM)[number] }) {
 export default function About() {
   return (
     <>
-      <Navbar />
-
       <div className="container my-5">
         {/* Our Purpose */}
         <div className="row align-items-center mb-5 py-4">
@@ -110,7 +106,6 @@ export default function About() {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }

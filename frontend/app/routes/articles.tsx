@@ -1,7 +1,5 @@
 import { Link, useLoaderData } from "react-router";
 import { apiFetch } from "../lib/api";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import PageSpinner from "../components/PageSpinner";
 
 export function meta() {
@@ -84,8 +82,6 @@ export default function Articles() {
 
   return (
     <>
-      <Navbar />
-
       <div className="container py-5">
         {/* Header */}
         <div className="text-center mb-5">
@@ -121,7 +117,6 @@ export default function Articles() {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }

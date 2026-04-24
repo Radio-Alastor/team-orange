@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { redirect, useLoaderData, useNavigate } from "react-router";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 import PageSpinner from "../../components/PageSpinner";
 import { apiFetch } from "../../lib/api";
 import { getToken } from "../../lib/auth";
@@ -205,8 +203,6 @@ export default function ArticleEditor() {
 
   return (
     <>
-      <Navbar />
-
       <main className="container py-5">
         <div className="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3">
           <div>
@@ -247,7 +243,6 @@ export default function ArticleEditor() {
         <BlockReference />
       </main>
 
-      <Footer />
     </>
   );
 }

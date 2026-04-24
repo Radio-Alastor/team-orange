@@ -25,6 +25,28 @@ a {
     font-family: "Atkinson Hyperlegible", sans-serif;
 }
 
+/* TODO Login Section*/
+/* Start Of Login */
+#mainsection-login {
+    min-height: 600px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#mainsection-login form {
+    margin: 2rem auto;
+}
+
+.signup-link {
+    font-family: 'Lexend', sans-serif;
+}
+
+/* End Of Login */
+
+
 /* --- NAVIGATION --- */
 
 

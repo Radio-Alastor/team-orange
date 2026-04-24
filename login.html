@@ -1,0 +1,283 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silver Guide</title>
+
+    <!-- Import Bootstrap CSS-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!-- Apply fonts imported from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- External stylesheet for the website -->
+    <link rel="stylesheet" href="./css/styles.css">
+
+</head>
+
+<body>
+    <!-- Bootstrap Toast -->
+    <!-- https://getbootstrap.com/docs/5.38/components/toasts/ -->
+    <div class="toast-container p-3 top-0 start-50 translate-middle-x">
+        <!-- Put toasts within -->
+        <div id="msg-toast" class="toast align-items-center mt-2" role="alert" aria-live="assertive" aria-atomic="true"
+            data-bs-autohide="true" data-bs-delay="4000">
+            <div class="d-flex">
+                <div id="msg-toast-body" class="toast-body">
+                    <!-- Message to be added here -->
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    <!-- End of toast -->
+    <!-- Start of Navigation -->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light border-bottom" style="background-color: #f8f9fa;">
+        <div class="container">
+            <!-- logo -->
+            <a class="me-3" href="#">
+                <img src="./imgs/logo.svg" alt="SilverGuide Logo" width="60" height="60"
+                    class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- links to other pages -->
+            <div class=" navbar-nav me-auto mb-2 mb-lg-0 collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="nav nav-underline align-items-center mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#learn">Learn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login/Sign-Up</a>
+
+                    </li>
+                </ul>
+
+                <!-- right side of nav -->
+                <div class="d-flex align-items-center">
+                    <a class="nav-link me-2" href="#help">Help</a>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- End of Navigation -->
+
+    <!-- Start of Login Main Section -->
+    <section id="mainsection-login">
+        <div class="container w-50 login">
+
+            <div>
+                <h1 class="display-5 text-info text-center">Welcome to the silver guide!</h1>
+            </div>
+
+            <form id="formLogin" class="needs-validation" novalidate>
+                <!-- Email input -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        <label class="form-label fw-lighter" for="txtEmail">Email:</label>
+                        <input type="email" id="txtEmail" class="form-control" required />
+                        <div class="invalid-feedback text-red">
+                            Please enter a valid email.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message input -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        <label class="form-label fw-lighter" for="txtPassword">Password:</label>
+                        <input type="password" id="txtPassword" class="form-control" required />
+                        <div class="invalid-feedback text-red">
+                            Please enter a password.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit button -->
+                <div class="d-flex justify-content-center pt-4 formBtn">
+                    <button type="submit" id="btnLogin" class="btn btn-primary btn-block ms-2">
+                        Login
+                    </button>
+                    <button type="reset" id="btnReset" class="btn btn-secondary btn-block ms-2">Reset</button>
+                </div>
+                <div class="signup-link text-center mt-3 fw-light">
+                    <p class="">No account yet? Click <a class='justify-content-center' href='signup.html'>here</a>
+                    </p>
+                </div>
+            </form>
+
+        </div>
+    </section>
+    <!-- End of Login Main Section -->
+
+    <!-- Start of Footer Section -->
+    <footer class="py-5 border-top" style="background-color: #f8f9fa;">
+        <div class="container">
+            <div class="row">
+                <!-- footer left side -->
+                <div class="col-md-6 text-start">
+                    <a class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none" href="#">
+                        <img src="./imgs/logo.svg" alt="SilverGuide Logo" width="60" height="60"
+                            class="d-inline-block align-text-top">
+                    </a>
+                    <h6 class="text-body-secondary">Helping you navigate the digital world</h6>
+                    <p class="text-muted">&copy; 2026 The Silver Guide Website, All rights reserved.</p>
+                </div>
+
+                <!-- footer right side -->
+                <div class="col-md-6 text-end">
+                    <ul class="list-unstyled mb-0">
+                        <li class="nav-item mb-2">
+                            <a href="#contact" class="nav-link p-0 text-body-secondary">Contact Us</a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="#about" class="nav-link p-0 text-body-secondary">About Us</a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="#faq" class="nav-link p-0 text-body-secondary">FAQs</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End of Footer Section -->
+
+    <!-- Import Bootstrap javascript library -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+        </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="js/const.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/boostrap-ftns.js"></script>
+    <script src="js/form-validate.js"></script>
+
+
+    <!-- Internal JavaScript -->
+    <script>
+        // Test user account for validation
+        const TEST_USER = {
+            firstName: "John",
+            lastName: "Joe",
+            email: "test@silverguide.com",
+            password: "S1234567"
+        }
+
+        // JavaScript function
+        document.getElementById("formLogin").addEventListener("submit", async (event) => {
+
+            event.preventDefault();                                                 // Prevent default browser events from happening
+
+            const email = document.getElementById("txtEmail");                      // Create constant variables to capture form inputs - txtEmail
+            const pwd = document.getElementById("txtPassword");                     // Create constant variables to capture form inputs - txtPassword
+
+            const toastElement = document.getElementById("msg-toast");              // Get the toast element - msg-toast
+            const toastBodyElement = document.getElementById("msg-toast-body");     // Get the toast element - msg-toast-body
+
+            if (isEmpty(email.value) || isEmpty(pwd.value)) {                         // Trap empty inputs for txtEmail and txtPassword - isEmpty()
+                showToast({
+                    toastElement,
+                    toastBodyElement,
+                    bgColor: "danger", msg: "All inputs must not be empty."
+                });
+                return;
+            }
+
+            if (!isEmail(email.value)) {                                              // Trap invalid email for txtEmail - isEmail()
+                showToast({
+                    toastElement,
+                    toastBodyElement,
+                    bgColor: "danger", msg: "Email is invalid."
+                });
+                return;
+            }
+
+            const formData = { email: email.value, password: pwd.value };           // JavaScript Object formData stores the form's input values
+
+            // const loginSuccess = await login(formData);                             // Invoke login() function, and end (return)
+            let loginSuccess = false;
+
+            // 🔹 Check against test account first
+            if (
+                formData.email === TEST_USER.email &&
+                formData.password === TEST_USER.password
+            ) {
+                loginSuccess = true;
+            } else {
+                // 🔹 Fallback to existing login() if needed
+                if (typeof login === "function") {
+                    loginSuccess = await login(formData);
+                }
+            }
+
+            // if (!loginSuccess) {
+            // showToast({ toastElement, toastBodyElement, bgColor: "danger", msg: "Unable to log in. Try again." });    // If login unsuccessful, provide feeback
+            // }
+
+            console.log("Login success:", loginSuccess);
+            console.log("Entered email:", formData.email);
+            console.log("Entered password:", formData.password);
+
+            if (loginSuccess) {
+                try {
+                    showToast({
+                        toastElement,
+                        toastBodyElement,
+                        bgColor: "success",
+                        msg: "Login successful! Redirecting..."
+                    });
+                } catch (e) {
+                    console.warn("Toast failed:", e);
+                }
+
+                // Store logged-in user in localStorage
+                localStorage.setItem("currentUser", JSON.stringify(TEST_USER));
+
+                // Redirect after login with valid credentials successfully)
+                setTimeout(() => {
+                    window.location.href = "like-comment.html";
+                }, 1000);
+
+                return; // stop further execution
+
+            } else {
+                // spinner.displaySpinner(false);
+                showToast({
+                    toastElement,
+                    toastBodyElement,
+                    bgColor: "danger",
+                    msg: "Invalid email or password."
+                });
+            }
+
+
+        });
+
+    </script>
+</body>
+
+</html>

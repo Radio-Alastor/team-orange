@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silver Guide</title>
+
+    <!-- Import Bootstrap CSS-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!-- Apply fonts imported from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- External stylesheet for the website -->
+    <link rel="stylesheet" href="./css/styles.css">
+
+</head>
+
+
+
+<body class="d-flex flex-column min-vh-100">
+    <!-- Start of Navigation -->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light border-bottom" style="background-color: #f8f9fa;">
+        <div class="container">
+            <!-- logo -->
+            <a class="me-3" href="#">
+                <img src="./imgs/logo.svg" alt="SilverGuide Logo" width="60" height="60"
+                    class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- links to other pages -->
+            <div class=" navbar-nav me-auto mb-2 mb-lg-0 collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="nav nav-underline align-items-center mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#learn">Learn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                </ul>
+
+                <!-- right side of nav -->
+                <div class="d-flex align-items-center">
+                    <a class="nav-link me-2" href="#help">Help</a>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- End of Navigation -->
+
+    <section class="flex-grow-1 d-flex align-items-center">
+
+        <div class="container w-50 login">
+            <!-- Article -->
+            <h1 class="display-6 text-info text-center">
+                <Article> Article page with Like and Comments</Article>
+            </h1>
+            <p class="text-gray-500 text-sm mb-4">By SilverGuide • April 2026</p>
+            <p class="mb-6 text-gray-700">
+                Creating interactive web pages is a key skill for full stack developers. Adding features such as like
+                buttons and comment sections improves user engagement and makes applications more dynamic.
+            </p>
+
+            <!-- Like Button -->
+            <div class="flex items-center gap-4 mb-6">
+                <button id="likeBtn" class="btn btn-primary btn-block ms-2 text-white px-4 py-2 rounded-xl transition">
+                    👍 Like
+                </button>
+                <span id="likeCount" class="text-gray-700">0 Likes</span>
+            </div>
+
+            <!-- Comment Section -->
+            <div class="mt-4">
+                <h2 class="h5 mb-3">Comments</h2>
+
+                <!-- Form Group -->
+                <div class="mb-3">
+                    <textarea id="commentInput" class="form-control" rows="3"
+                        placeholder="Write a comment..."></textarea>
+                </div>
+
+                <!-- Button aligned right -->
+                <div class="d-flex justify-content-end">
+                    <button id="commentBtn" class="btn btn-secondary">
+                        Post Comment
+                    </button>
+                </div>
+
+                <!-- Comments List -->
+                <ul id="commentList" class="list-group mt-3"></ul>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Start of Footer Section -->
+    <footer class="py-5 border-top mt-auto" style="background-color: #f8f9fa;">
+        <div class="container">
+            <div class="row">
+                <!-- footer left side -->
+                <div class="col-md-6 text-start">
+                    <a class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none" href="#">
+                        <img src="./imgs/logo.svg" alt="SilverGuide Logo" width="60" height="60"
+                            class="d-inline-block align-text-top">
+                    </a>
+                    <h6 class="text-body-secondary">Helping you navigate the digital world</h6>
+                    <p class="text-muted">&copy; 2026 The Silver Guide Website, All rights reserved.</p>
+                </div>
+
+                <!-- footer right side -->
+                <div class="col-md-6 text-end">
+                    <ul class="list-unstyled mb-0">
+                        <li class="nav-item mb-2">
+                            <a href="#contact" class="nav-link p-0 text-body-secondary">Contact Us</a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="#about" class="nav-link p-0 text-body-secondary">About Us</a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="#faq" class="nav-link p-0 text-body-secondary">FAQs</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End of Footer Section -->
+
+    <!-- Import Bootstrap javascript library -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+        </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/boostrap-ftns.js"></script>
+    <script src="js/form-validate.js"></script>
+
+    <!-- Internal Script -->
+    <script>
+    // Like functionality
+    // Get Logged-in User
+
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    // Fallback test user (if not logged in)
+    if (!currentUser) {
+        currentUser = {
+            firstName: "Guest",
+            lastName: "User",
+            email: "guest@silverguide.com"
+        };
+    }
+
+    const fullName = currentUser.firstName + " " + currentUser.lastName;
+
+    // Like functionality (with user)
+    let likeCount = 0;
+    const likeBtn = document.getElementById('likeBtn');
+    const likeDisplay = document.getElementById('likeCount');
+
+    likeBtn.addEventListener('click', () => {
+        likeCount++;
+
+        likeDisplay.textContent = `${likeCount} Likes (last liked by ${fullName})`;
+    });
+
+    // Comment functionality (with user)
+    const commentBtn = document.getElementById('commentBtn');
+    const commentInput = document.getElementById('commentInput');
+    const commentList = document.getElementById('commentList');
+
+    commentBtn.addEventListener('click', () => {
+        const text = commentInput.value.trim();
+
+        if (text === '') return;
+
+        const li = document.createElement('li');
+        li.className = 'list-group-item';
+
+        // Add user name + comment
+        li.innerHTML = `
+            <strong>${fullName}</strong><br>
+            ${text}
+        `;
+
+        commentList.appendChild(li);
+        commentInput.value = '';
+    });
+    </script>
+
+
+</body>
+</html>

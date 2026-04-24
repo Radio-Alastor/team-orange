@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { redirect, useLoaderData } from "react-router";
+import { redirect, useLoaderData, useNavigate } from "react-router";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { apiFetch } from "../../lib/api";
@@ -50,8 +50,18 @@ export function meta() {
   return [{ title: "Silver Guide - Article Editor" }];
 }
 
+function slugify(title: string) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
 export default function ArticleEditor() {
   const { topics } = useLoaderData<typeof clientLoader>();
+  const navigate = useNavigate();
   const editorRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const editorInstanceRef = useRef<any>(null);
@@ -181,7 +191,7 @@ export default function ArticleEditor() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const article = await res.json();
       localStorage.removeItem("articleEditorDraft");
-      alert(`Article saved (id: ${article.id})`);
+      navigate(`/articles/${article.id}/${slugify(article.title)}`);
     } catch (err) {
       console.warn("Backend not available, payload logged:", payload);
       alert("Backend not available. Payload logged to console (F12).");

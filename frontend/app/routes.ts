@@ -8,4 +8,6 @@ export default [
   route("editor", "routes/editor/editor.tsx"),
   route("about", "routes/about.tsx"),
   route("ai-tutorial", "routes/ai-tutorial.tsx"),
+  route("articles/:id/:slug", "routes/article.tsx", { id: "article-with-slug" }),
+  route("articles/:id", "routes/article.tsx", { id: "article-without-slug" }),
 ] satisfies RouteConfig;

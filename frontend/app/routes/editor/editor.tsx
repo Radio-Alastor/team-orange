@@ -9,7 +9,7 @@ import type { Topic } from "./types";
 import ArticleMetaForm from "./ArticleMetaForm";
 import BlockReference from "./BlockReference";
 
-export async function clientLoader() {
+export async function clientLoader({ request }: { request: Request }) {
   const token = getToken();
   if (!token) throw redirect("/login");
 
@@ -29,7 +29,15 @@ export async function clientLoader() {
     // backend unreachable; topics stays empty
   }
 
-  return { topics };
+  const editId = new URL(request.url).searchParams.get("edit");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let article: any = null;
+  if (editId) {
+    const articleRes = await apiFetch(`/api/articles/${editId}`);
+    if (articleRes.ok) article = await articleRes.json();
+  }
+
+  return { topics, article };
 }
 
 export function HydrateFallback() {
@@ -60,17 +68,17 @@ function slugify(title: string) {
 }
 
 export default function ArticleEditor() {
-  const { topics } = useLoaderData<typeof clientLoader>();
+  const { topics, article } = useLoaderData<typeof clientLoader>();
   const navigate = useNavigate();
   const editorRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const editorInstanceRef = useRef<any>(null);
 
-  const [title, setTitle] = useState("");
-  const [topicId, setTopicId] = useState<number | null>(null);
-  const [subtitle, setSubtitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [heroImage, setHeroImage] = useState("");
+  const [title, setTitle] = useState(article?.title ?? "");
+  const [topicId, setTopicId] = useState<number | null>(article?.topicId ?? null);
+  const [subtitle, setSubtitle] = useState(article?.subtitle ?? "");
+  const [description, setDescription] = useState(article?.description ?? "");
+  const [heroImage, setHeroImage] = useState(article?.imgUrl ?? "");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [hasDraft, setHasDraft] = useState(() => !!localStorage.getItem("articleEditorDraft"));
 
@@ -101,11 +109,16 @@ export default function ArticleEditor() {
 
       if (cancelled) return;
 
+      let initialData = { blocks: [] as object[] };
+      if (article?.content) {
+        try { initialData = JSON.parse(article.content); } catch { /* keep empty */ }
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const ed = new EditorJS({
         holder: editorRef.current!,
         placeholder: "Start writing your article… press Tab to add a block.",
-        data: { blocks: [] },
+        data: initialData,
         tools: {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           header: { class: Header as any, config: { levels: [2, 3, 4], defaultLevel: 2 } },
@@ -182,16 +195,18 @@ export default function ArticleEditor() {
     }
 
     try {
-      const res = await apiFetch("/api/articles", {
-        method: "POST",
+      const endpoint = article ? `/api/articles/${article.id}` : "/api/articles";
+      const method   = article ? "PUT" : "POST";
+      const res = await apiFetch(endpoint, {
+        method,
         headers: { Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload),
       });
       if (res.status === 401) { alert("Session expired — please sign in again."); return; }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const article = await res.json();
+      const saved = await res.json();
       localStorage.removeItem("articleEditorDraft");
-      navigate(`/articles/${article.id}/${slugify(article.title)}`);
+      navigate(`/articles/${saved.id}/${slugify(saved.title)}`);
     } catch (err) {
       console.warn("Backend not available, payload logged:", payload);
       alert("Backend not available. Payload logged to console (F12).");
@@ -205,14 +220,14 @@ export default function ArticleEditor() {
       <main className="container py-5">
         <div className="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3">
           <div>
-            <h1 className="fw-bold mb-1">Article Editor</h1>
-            <p className="text-muted">Write and export a new Silver Guide article</p>
+            <h1 className="fw-bold mb-1">{article ? "Edit Article" : "Article Editor"}</h1>
+            <p className="text-muted">{article ? "Update an existing Silver Guide article" : "Write and publish a new Silver Guide article"}</p>
           </div>
           <div className="d-flex gap-2 flex-wrap">
             <button onClick={loadDraft} disabled={!hasDraft} className="btn btn-outline-secondary">Load Draft</button>
             <button onClick={saveJSON} className="btn btn-outline-secondary">Save Draft</button>
             <button onClick={loadExample} className="btn btn-outline-secondary">Load Example</button>
-            <button onClick={saveToBackend} className="btn btn-success fw-bold">Save to Backend</button>
+            <button onClick={saveToBackend} className="btn btn-success fw-bold">{article ? "Update Article" : "Save to Backend"}</button>
           </div>
         </div>
 

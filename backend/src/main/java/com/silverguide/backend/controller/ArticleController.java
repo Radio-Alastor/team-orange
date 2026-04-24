@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,5 +37,19 @@ public class ArticleController {
     @GetMapping("/{id}")
     public ResponseEntity<ArticleResponse> getArticle(@PathVariable Long id) {
         return ResponseEntity.ok(articleService.getArticle(id));
+    }
+
+    @PreAuthorize("hasRole('STAFF')")
+    @PutMapping("/{id}")
+    public ResponseEntity<ArticleResponse> updateArticle(
+            @PathVariable Long id, @RequestBody ArticleRequest req) {
+        return ResponseEntity.ok(articleService.updateArticle(id, req));
+    }
+
+    @PreAuthorize("hasRole('STAFF')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteArticle(@PathVariable Long id) {
+        articleService.deleteArticle(id);
+        return ResponseEntity.noContent().build();
     }
 }

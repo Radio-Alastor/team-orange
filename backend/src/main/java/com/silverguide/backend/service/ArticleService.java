@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -55,6 +56,29 @@ public class ArticleService {
                 .stream()
                 .map(this::toResponse)
                 .toList();
+    }
+
+    @Transactional
+    public ArticleResponse updateArticle(Long id, ArticleRequest req) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Article not found"));
+        Topic topic = topicRepository.findById(req.getTopicId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Topic not found"));
+        article.setTitle(req.getTitle());
+        article.setSubtitle(req.getSubtitle());
+        article.setDescription(req.getSummary());
+        article.setImgUrl(req.getImageUrl());
+        article.setContent(req.getContent());
+        article.setTopic(topic);
+        return toResponse(articleRepository.save(article));
+    }
+
+    @Transactional
+    public void deleteArticle(Long id) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Article not found"));
+        article.setDeletedAt(LocalDateTime.now());
+        articleRepository.save(article);
     }
 
     @Transactional(readOnly = true)

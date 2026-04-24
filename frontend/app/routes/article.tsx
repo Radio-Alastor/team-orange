@@ -1,7 +1,8 @@
-import { Link, redirect, useLoaderData } from "react-router";
+import { Link, redirect, useLoaderData, useNavigate } from "react-router";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { apiFetch } from "../lib/api";
+import { getToken, getUser } from "../lib/auth";
 
 export async function clientLoader({ params }: { params: Record<string, string> }) {
   try {
@@ -129,12 +130,24 @@ function renderBlocks(blocks: Block[]) {
 export default function ArticlePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const article = useLoaderData<any>();
+  const navigate = useNavigate();
+  const user = getUser();
 
   let blocks: Block[] = [];
   try {
     blocks = JSON.parse(article.content).blocks ?? [];
   } catch {
     // malformed content — render nothing
+  }
+
+  async function handleDelete() {
+    if (!confirm("Are you sure you want to delete this article? This cannot be undone.")) return;
+    const token = getToken();
+    const res = await apiFetch(`/api/articles/${article.id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (res.ok) navigate("/articles");
   }
 
   return (
@@ -154,6 +167,13 @@ export default function ArticlePage() {
               </li>
             </ol>
           </nav>
+
+          {user?.staff && (
+            <div className="d-flex gap-2 mb-3">
+              <Link to={`/editor?edit=${article.id}`} className="btn btn-outline-primary btn-sm">Edit</Link>
+              <button onClick={handleDelete} className="btn btn-outline-danger btn-sm">Delete</button>
+            </div>
+          )}
 
           <h1 className="display-4 fw-bold mb-3">{article.title}</h1>
 

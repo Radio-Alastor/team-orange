@@ -1,7 +1,8 @@
 import { Link, useLoaderData } from "react-router";
+import { apiFetch } from "../lib/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { apiFetch } from "../lib/api";
+import PageSpinner from "../components/PageSpinner";
 
 export function meta() {
   return [
@@ -33,19 +34,7 @@ export async function clientLoader() {
   return { tech, scam };
 }
 
-export function HydrateFallback() {
-  return (
-    <>
-      <Navbar />
-      <div className="container py-5 text-center text-muted">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading…</span>
-        </div>
-      </div>
-      <Footer />
-    </>
-  );
-}
+export function HydrateFallback() { return <PageSpinner />; }
 
 function slugify(title: string) {
   return title

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { redirect, useLoaderData, useNavigate } from "react-router";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import PageSpinner from "../../components/PageSpinner";
 import { apiFetch } from "../../lib/api";
 import { getToken } from "../../lib/auth";
 import { DEFAULT_META, DEFAULT_DATA } from "./editorDefaults";
@@ -40,19 +41,7 @@ export async function clientLoader({ request }: { request: Request }) {
   return { topics, article };
 }
 
-export function HydrateFallback() {
-  return (
-    <>
-      <Navbar />
-      <div className="container py-5 text-center text-muted">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading…</span>
-        </div>
-      </div>
-      <Footer />
-    </>
-  );
-}
+export function HydrateFallback() { return <PageSpinner />; }
 
 export function meta() {
   return [{ title: "Silver Guide - Article Editor" }];
@@ -109,7 +98,8 @@ export default function ArticleEditor() {
 
       if (cancelled) return;
 
-      let initialData = { blocks: [] as object[] };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let initialData: any = { blocks: [] };
       if (article?.content) {
         try { initialData = JSON.parse(article.content); } catch { /* keep empty */ }
       }

@@ -1,7 +1,8 @@
 import { Link, redirect, useLoaderData, useNavigate } from "react-router";
+import { apiFetch } from "../lib/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { apiFetch } from "../lib/api";
+import PageSpinner from "../components/PageSpinner";
 import { getToken, getUser } from "../lib/auth";
 
 export async function clientLoader({ params }: { params: Record<string, string> }) {
@@ -16,19 +17,7 @@ export async function clientLoader({ params }: { params: Record<string, string> 
   }
 }
 
-export function HydrateFallback() {
-  return (
-    <>
-      <Navbar />
-      <div className="container py-5 text-center text-muted">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading…</span>
-        </div>
-      </div>
-      <Footer />
-    </>
-  );
-}
+export function HydrateFallback() { return <PageSpinner />; }
 
 export function meta({ data }: { data: { title?: string } }) {
   return [{ title: `Silver Guide - ${data?.title ?? "Article"}` }];

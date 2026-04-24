@@ -39,12 +39,31 @@ type Block = {
   data: any;
 };
 
+const ALLOWED_TAGS = new Set(["b", "strong", "i", "em", "u", "a", "br"]);
+
+function sanitize(html: string): string {
+  return html.replace(/<(\/?)([a-zA-Z][a-zA-Z0-9]*)([^>]*)>/g, (_, close, tag, attrs) => {
+    const lower = tag.toLowerCase();
+    if (!ALLOWED_TAGS.has(lower)) return "";
+    if (close) return `</${lower}>`;
+    if (lower === "a") {
+      const href = attrs.match(/href="([^"]*)"/)?.[1] ?? "#";
+      return `<a href="${href}">`;
+    }
+    return `<${lower}>`;
+  });
+}
+
+function safe(html: string) {
+  return { __html: sanitize(html) };
+}
+
 function renderBlocks(blocks: Block[]) {
   return blocks.map((block, i) => {
     const { type, data } = block;
 
     if (type === "paragraph") {
-      return <p key={i} dangerouslySetInnerHTML={{ __html: data.text }} />;
+      return <p key={i} dangerouslySetInnerHTML={safe(data.text)} />;
     }
 
     if (type === "header") {
@@ -59,7 +78,7 @@ function renderBlocks(blocks: Block[]) {
 
     if (type === "list") {
       const items = (data.items as string[]).map((item, j) => (
-        <li key={j} dangerouslySetInnerHTML={{ __html: item }} />
+        <li key={j} dangerouslySetInnerHTML={safe(item)} />
       ));
       return data.style === "ordered"
         ? <ol key={i} className="mb-4">{items}</ol>
@@ -69,10 +88,10 @@ function renderBlocks(blocks: Block[]) {
     if (type === "quote") {
       return (
         <div key={i} className="analogy mb-4">
-          <span dangerouslySetInnerHTML={{ __html: data.text }} />
+          <span dangerouslySetInnerHTML={safe(data.text)} />
           {data.caption && (
             <footer className="blockquote-footer mt-1">
-              <span dangerouslySetInnerHTML={{ __html: data.caption }} />
+              <span dangerouslySetInnerHTML={safe(data.caption)} />
             </footer>
           )}
         </div>
@@ -83,7 +102,7 @@ function renderBlocks(blocks: Block[]) {
       return (
         <div key={i} className="tip-box">
           <h5 className="fw-bold">{data.title}</h5>
-          <p dangerouslySetInnerHTML={{ __html: data.message }} />
+          <p dangerouslySetInnerHTML={safe(data.message)} />
         </div>
       );
     }

@@ -10,12 +10,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/articles")
 @RequiredArgsConstructor
 public class ArticleController {
 
     private final ArticleService articleService;
+
+    @GetMapping
+    public ResponseEntity<List<ArticleResponse>> listByTopic(@RequestParam Long topicId) {
+        return ResponseEntity.ok(articleService.getRecentByTopic(topicId));
+    }
 
     @PostMapping
     public ResponseEntity<ArticleResponse> createArticle(

@@ -9,12 +9,14 @@ import com.silverguide.backend.repository.ArticleRepository;
 import com.silverguide.backend.repository.TopicRepository;
 import com.silverguide.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +46,15 @@ public class ArticleService {
 
         article = articleRepository.save(article);
         return toResponse(article);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ArticleResponse> getRecentByTopic(Long topicId) {
+        return articleRepository
+                .findRecentByTopic(topicId, PageRequest.of(0, 4))
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     @Transactional(readOnly = true)

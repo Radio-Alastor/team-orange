@@ -42,6 +42,7 @@ public class SecurityConfig {
                                  "/api/auth/refresh", "/api/auth/logout").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/topics").permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/api/articles/*", "GET")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/api/articles", "GET")).permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session

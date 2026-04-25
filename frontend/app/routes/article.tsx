@@ -2,6 +2,7 @@ import { Link, redirect, useLoaderData, useNavigate } from "react-router";
 import { apiFetch } from "../lib/api";
 import PageSpinner from "../components/PageSpinner";
 import { getToken, getUser } from "../lib/auth";
+import ChatWidget from "../components/ChatWidget";
 
 export async function clientLoader({ params }: { params: Record<string, string> }) {
   try {
@@ -114,6 +115,23 @@ function renderBlocks(blocks: Block[]) {
   });
 }
 
+function blocksToText(blocks: Block[]): string {
+  return blocks
+    .map(({ type, data }) => {
+      if (type === "paragraph") return data.text?.replace(/<[^>]*>/g, "") ?? "";
+      if (type === "header") return data.text ?? "";
+      if (type === "list")
+        return (data.items as (string | { content: string })[])
+          .map((i) => (typeof i === "string" ? i : i.content))
+          .join(". ");
+      if (type === "quote") return data.text ?? "";
+      if (type === "warning") return `${data.title ?? ""}: ${data.message ?? ""}`;
+      return "";
+    })
+    .filter(Boolean)
+    .join("\n\n");
+}
+
 export default function ArticlePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const article = useLoaderData<any>();
@@ -190,6 +208,9 @@ export default function ArticlePage() {
         </article>
       </div>
 
+      {getUser() && (
+        <ChatWidget articleTitle={article.title} articleContent={blocksToText(blocks)} />
+      )}
     </>
   );
 }

@@ -5,6 +5,17 @@ VALUES
 ('Scam Awareness', 'Learn how to identify common online threats and protect your personal information.');
 
 
+-- Admin user                                                                                                                                          
+  INSERT INTO users (id, name, email, password, is_superuser, is_staff)                                                                                  
+  VALUES (                                                                                                                                               
+      UUID(),                                                                                                                                            
+      'Admin',                                                                                                                                           
+      'admin@example.com',
+      '$2a$10$ALDaHxHk8KlIHlzoKqHum.sdJgfQxqnmNiQtcYBVhQrhpNtedPIB6',
+      1,
+      1
+  );
+
 -- Sample articles: topic_id 1 = Technology Basics, topic_id 2 = Scam Awareness
 -- user_id is NULL (seed data, no author)
 

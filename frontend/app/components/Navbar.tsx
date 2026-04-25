@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useLocation } from "react-router";
 import { getUser, clearAuth } from "../lib/auth";
 import ProfileModal from "./ProfileModal";
 
 export default function Navbar() {
   const [user, setUser] = useState<ReturnType<typeof getUser>>(null);
   const [showProfile, setShowProfile] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     setUser(getUser());
-  }, []);
+  }, [location]);
 
   async function handleLogout() {
-    const refreshToken = sessionStorage.getItem("sg_refresh_token");
+    const refreshToken = localStorage.getItem("sg_refresh_token");
     try {
       await fetch("/api/auth/logout", {
         method: "POST",

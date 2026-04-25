@@ -9,14 +9,14 @@ export interface AuthData {
 
 const isBrowser = typeof window !== 'undefined';
 
-export const getToken = () => isBrowser ? sessionStorage.getItem('sg_token') : null;
+export const getToken = () => isBrowser ? localStorage.getItem('sg_token') : null;
 export const getUser = (): Omit<AuthData, 'token' | 'refreshToken'> | null =>
-  isBrowser ? JSON.parse(sessionStorage.getItem('sg_user') ?? 'null') : null;
+  isBrowser ? JSON.parse(localStorage.getItem('sg_user') ?? 'null') : null;
 
 export function setAuth(data: AuthData) {
-  sessionStorage.setItem('sg_token', data.token);
-  sessionStorage.setItem('sg_refresh_token', data.refreshToken);
-  sessionStorage.setItem('sg_user', JSON.stringify({
+  localStorage.setItem('sg_token', data.token);
+  localStorage.setItem('sg_refresh_token', data.refreshToken);
+  localStorage.setItem('sg_user', JSON.stringify({
     userId: data.userId,
     name: data.name,
     email: data.email,
@@ -25,7 +25,7 @@ export function setAuth(data: AuthData) {
 }
 
 export function clearAuth() {
-  sessionStorage.removeItem('sg_token');
-  sessionStorage.removeItem('sg_refresh_token');
-  sessionStorage.removeItem('sg_user');
+  localStorage.removeItem('sg_token');
+  localStorage.removeItem('sg_refresh_token');
+  localStorage.removeItem('sg_user');
 }

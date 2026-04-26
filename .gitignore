@@ -1,5 +1,5 @@
 # Secrets
-.env
+*.env
 
 
 # IDE files
@@ -45,3 +45,7 @@ build/
 # pnpm
 pnpm-debug.log*
 .pnpm-store/
+
+# Python related
+**/.venv/
+*.pyc

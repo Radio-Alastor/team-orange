@@ -80,7 +80,6 @@ export default function ChatWidget({ articleTitle, articleContent }: ChatWidgetP
     setMessages(next);
     setInput("");
     setLoading(true);
-    setTimeout(() => {}, 10000);
     try {
       const res = await apiFetch("/api/chat", {
         method: "POST",

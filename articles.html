@@ -106,74 +106,94 @@
         <header class="text-center mb-5">
             <h1 class="display-3 fw-bold mb-3">Learn & Protect</h1>
             <p class="lead text-muted mx-auto" style="max-width: 800px;">
-                Welcome to our library of guides. Whether you want to master new technology or learn how to stay safe online, we have simple instructions to help you every step of the way.
+                Welcome to our library of guides. Whether you want to master new technology or learn how to stay safe
+                online, we have simple instructions to help you every step of the way.
             </p>
         </header>
 
         <!-- Article Categories -->
         <div class="row g-4 justify-content-center">
-            
+
             <!-- Category: Technology Basics -->
-            <div class="col-12 mt-5">
+            <div class="row mb-5">
                 <h2 class="border-bottom pb-3 mb-4">Technology Basics</h2>
-            </div>
+                <div id="topic-tech-basics" class="row row-cols-1 row-cols-md-3 g-4">
+                    <!-- Article 1: AI Tutorial -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card article-card shadow-sm">
+                            <img src="./imgs/ai_tutorial.png" class="card-img-top" alt="AI Interface">
+                            <div class="card-body d-flex flex-column p-4">
+                                <span
+                                    class="badge category-badge text-primary bg-primary-subtle mb-3 align-self-start">Tech
+                                    Tuturial</span>
+                                <h3 class="card-title h4 fw-bold">Understanding AI Helpers</h3>
+                                <p class="card-text text-muted flex-grow-1">Learn how tools like ChatGPT and digital
+                                    assistants can help you write emails, plan trips, and answer questions instantly.
+                                </p>
+                                <a href="ai-tutorial.html" class="btn btn-primary btn-read mt-3">Read Guide</a>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- Article 1: AI Tutorial -->
-            <div class="col-md-6 col-lg-4">
-                <div class="card article-card shadow-sm">
-                    <img src="./imgs/ai_tutorial.png" class="card-img-top" alt="AI Interface">
-                    <div class="card-body d-flex flex-column p-4">
-                        <span class="badge category-badge text-primary bg-primary-subtle mb-3 align-self-start">Tech Tuturial</span>
-                        <h3 class="card-title h4 fw-bold">Understanding AI Helpers</h3>
-                        <p class="card-text text-muted flex-grow-1">Learn how tools like ChatGPT and digital assistants can help you write emails, plan trips, and answer questions instantly.</p>
-                        <a href="ai-tutorial.html" class="btn btn-primary btn-read mt-3">Read Guide</a>
+                    <!-- Article 2: Mobile Photography -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card article-card shadow-sm">
+                            <img src="./imgs/mobile_photography.png" class="card-img-top" alt="Taking a photo">
+                            <div class="card-body d-flex flex-column p-4">
+                                <span
+                                    class="badge category-badge text-success bg-success-subtle mb-3 align-self-start">Skill
+                                    Building</span>
+                                <h3 class="card-title h4 fw-bold">Master Your Mobile Camera</h3>
+                                <p class="card-text text-muted flex-grow-1">Beautiful photos are just a click away. We
+                                    show you how to focus, use flash, and share photos with your family.</p>
+                                <a href="#" class="btn btn-primary btn-read mt-3">Read Guide</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Article 2: Mobile Photography -->
-            <div class="col-md-6 col-lg-4">
-                <div class="card article-card shadow-sm">
-                    <img src="./imgs/mobile_photography.png" class="card-img-top" alt="Taking a photo">
-                    <div class="card-body d-flex flex-column p-4">
-                        <span class="badge category-badge text-success bg-success-subtle mb-3 align-self-start">Skill Building</span>
-                        <h3 class="card-title h4 fw-bold">Master Your Mobile Camera</h3>
-                        <p class="card-text text-muted flex-grow-1">Beautiful photos are just a click away. We show you how to focus, use flash, and share photos with your family.</p>
-                        <a href="#" class="btn btn-primary btn-read mt-3">Read Guide</a>
-                    </div>
-                </div>
-            </div>
+
 
             <!-- Category: Scam Awareness -->
-            <div class="col-12 mt-5">
+            <div class="row">
                 <h2 class="border-bottom pb-3 mb-4">Stay Safe Online</h2>
-            </div>
+                <div id="topic-stay-safe" class="row row-cols-1 row-cols-md-3 g-4">
+                    <!-- Article 3: IT Support Scam -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card article-card shadow-sm">
+                            <img src="./imgs/it_scam_warning.png" class="card-img-top" alt="Scam Warning">
+                            <div class="card-body d-flex flex-column p-4">
+                                <span
+                                    class="badge category-badge text-danger bg-danger-subtle mb-3 align-self-start">Urgent
+                                    Warning</span>
+                                <h3 class="card-title h4 fw-bold">The "IT Support" Scam</h3>
+                                <p class="card-text text-muted flex-grow-1">Did a popup say your computer is infected?
+                                    Learn why you should never call the number on the screen.</p>
+                                <a href="#" class="btn btn-primary btn-read mt-3">Stay Safe</a>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- Article 3: IT Support Scam -->
-            <div class="col-md-6 col-lg-4">
-                <div class="card article-card shadow-sm">
-                    <img src="./imgs/it_scam_warning.png" class="card-img-top" alt="Scam Warning">
-                    <div class="card-body d-flex flex-column p-4">
-                        <span class="badge category-badge text-danger bg-danger-subtle mb-3 align-self-start">Urgent Warning</span>
-                        <h3 class="card-title h4 fw-bold">The "IT Support" Scam</h3>
-                        <p class="card-text text-muted flex-grow-1">Did a popup say your computer is infected? Learn why you should never call the number on the screen.</p>
-                        <a href="#" class="btn btn-primary btn-read mt-3">Stay Safe</a>
+                    <!-- Article 4: Phishing Emails -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card article-card shadow-sm">
+                            <img src="./imgs/phishing_alert.png" class="card-img-top" alt="Phishing Email">
+                            <div class="card-body d-flex flex-column p-4">
+                                <span
+                                    class="badge category-badge text-warning bg-warning-subtle mb-3 align-self-start">Scam
+                                    Alert</span>
+                                <h3 class="card-title h4 fw-bold">Spotting Phishing Emails</h3>
+                                <p class="card-text text-muted flex-grow-1">Is that email really from your bank? We
+                                    teach you how to check sender addresses and avoid suspicious links.</p>
+                                <a href="#" class="btn btn-primary btn-read mt-3">Stay Safe</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Article 4: Phishing Emails -->
-            <div class="col-md-6 col-lg-4">
-                <div class="card article-card shadow-sm">
-                    <img src="./imgs/phishing_alert.png" class="card-img-top" alt="Phishing Email">
-                    <div class="card-body d-flex flex-column p-4">
-                        <span class="badge category-badge text-warning bg-warning-subtle mb-3 align-self-start">Scam Alert</span>
-                        <h3 class="card-title h4 fw-bold">Spotting Phishing Emails</h3>
-                        <p class="card-text text-muted flex-grow-1">Is that email really from your bank? We teach you how to check sender addresses and avoid suspicious links.</p>
-                        <a href="#" class="btn btn-primary btn-read mt-3">Stay Safe</a>
-                    </div>
-                </div>
-            </div>
+
 
         </div>
     </main>
@@ -213,9 +233,10 @@
 
     <!-- Import Bootstrap javascript library -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous">
-    </script>
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+        </script>
+    <script src="./js/article-controller.js"></script>
+    <script src="./js/articles-renderer.js"></script>
 </body>
 
 </html>

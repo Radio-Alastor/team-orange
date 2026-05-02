@@ -11,7 +11,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="./css/styles.css">
@@ -60,7 +61,8 @@
             <div class="navbar-nav me-auto mb-2 mb-lg-0 collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="nav nav-underline align-items-center mx-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="articles.html">Learn</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="articles.html">Learn</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
                 </ul>
                 <div class="d-flex align-items-center">
@@ -82,10 +84,9 @@
             </div>
             <div class="d-flex gap-2">
                 <!-- TODO_02: Wire up to backend API -->
-                <button class="btn btn-outline-secondary" onclick="loadExample()">Load Example</button>
                 <button class="btn btn-outline-secondary" onclick="saveJSON()">Log JSON</button>
-                <button class="btn btn-success fw-bold" onclick="saveToBackend()">Save to Backend</button>
-                <button class="btn btn-primary fw-bold" onclick="generateHTML()">Generate HTML</button>
+         <!--   <button class="btn btn-success fw-bold" onclick="saveToBackend()">Save to Backend</button>     Replaced with publish article -->
+         <!--   <button class="btn btn-primary fw-bold" onclick="generateHTML()">Generate HTML</button>        Moving to Raw JSON + Dedicated Renderer -->
             </div>
         </div>
 
@@ -100,14 +101,29 @@
                             placeholder="e.g. Understanding AI Helpers">
                     </div>
                     <div class="col-md-4">
+                        <label for="articleCategory" class="form-label meta-label mb-1">Category</label>
+                        <select class="form-select form-select-lg" id="articleCategory">
+                            <optgroup label="Technology Basics">
+                                <option value="tech_tutorial">Tech Tutorial</option>
+                                <option value="skill_building">Skill Building</option>
+                            </optgroup>
+                            <optgroup label="Stay Safe Online">
+                                <option value="urgent_warning">Urgent Warning</option>
+                                <option value="scam_alert">Scam Alert</option>
+                                ```html
+                            </optgroup>
+                        </select>
+                        <small id="idHint" class="text-muted"></small>
+                        <!-- Old code for dropdown
                         <label class="meta-label mb-1">Category</label>
-                        <!-- TODO_01: Populate categories dynamically with respect to backend categories -->
+                        
                         <select id="articleCategory" class="form-select form-select-lg">
                             <option value="tech">Tech Tutorial</option>
                             <option value="skill">Skill Building</option>
                             <option value="warning">Urgent Warning</option>
                             <option value="scam">Scam Alert</option>
-                        </select>
+                        </select> 
+                    -->
                     </div>
                     <div class="col-md-9">
                         <label class="meta-label mb-1">
@@ -117,22 +133,31 @@
                         <textarea id="articleDesc" class="form-control" rows="2"
                             placeholder="A brief summary shown on the articles listing page…"></textarea>
                     </div>
-                    <div class="col-md-2">
-                        <label class="meta-label mb-1">Reading Time (min)</label>
-                        <input type="number" id="readingTime" class="form-control" value="5" min="1" max="60">
+                    <!--!TODO: Replaced reading time field with author. (minor)fix display-->
+                    <div class="col-md-2 meta-label">
+                        <label for="articleAuthor" class="form-label">Author (Admin)</label>
+                        <input type="text" class="form-control" id="articleAuthor" placeholder="Enter your name"
+                            required>
                     </div>
                     <div class="col-md-1">
                         <label class="meta-label mb-1">Topic ID</label>
                         <input type="number" id="articleTopic" class="form-control" placeholder="1" min="1">
                     </div>
                     <div class="col-12">
-                        <label class="meta-label mb-1">Hero Image URL</label>
-                        <input type="text" id="heroImage" class="form-control"
-                            placeholder="./imgs/your-image.png">
+                        <label for="heroImage" class="form-label meta-label mb-1">Hero Image URL</label>
+                        <input type="text" id="heroImage" class="form-control" placeholder="./imgs/your-image.png">
                     </div>
                 </div>
             </div>
+            <div class="d-flex px-4 gap-2 mb-4">
+                <button class="btn btn-primary px-4" onclick="handlePublish()">
+                    <i class="bi bi-cloud-upload"></i> Publish Article
+                </button>
+                <button class="btn btn-outline-secondary" onclick="loadExample()">Load Format Template</button>
+                <button class="btn btn-sm btn-link text-muted" onclick="saveDraftToLocal()">Save Draft</button>
+            </div>
         </div>
+
 
         <!-- Editor.js content editor -->
         <div class="card border-2 border-light shadow-sm rounded-4 mb-4">
@@ -216,8 +241,10 @@
                 </div>
                 <div class="col-md-6 text-end">
                     <ul class="list-unstyled mb-0">
-                        <li class="nav-item mb-2"><a href="#contact" class="nav-link p-0 text-body-secondary">Contact Us</a></li>
-                        <li class="nav-item mb-2"><a href="about.html" class="nav-link p-0 text-body-secondary">About Us</a></li>
+                        <li class="nav-item mb-2"><a href="#contact" class="nav-link p-0 text-body-secondary">Contact
+                                Us</a></li>
+                        <li class="nav-item mb-2"><a href="about.html" class="nav-link p-0 text-body-secondary">About
+                                Us</a></li>
                         <li class="nav-item mb-2"><a href="#faq" class="nav-link p-0 text-body-secondary">FAQs</a></li>
                     </ul>
                 </div>
@@ -238,9 +265,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/warning@1.4.0"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/@editorjs/simple-image@1.6.0"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@1.4.0"></script>
-    <script src="simple-image.js"></script>
-    <link href="simple-image.css" rel="stylesheet"/>
-    <script src="./article-editor.js"></script>
+    <script src="./js/simple-image.js"></script>
+    <link href="simple-image.css" rel="stylesheet" />
+    <script src="./js/article-controller.js"></script>
+    <script src="./js/article-editor.js"></script>
 
 </body>
 

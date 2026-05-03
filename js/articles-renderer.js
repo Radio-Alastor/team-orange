@@ -140,7 +140,7 @@ function deleteArticle(id) {
     }
 
     if (confirm(`Are you sure you want to delete "${article.title}"? This cannot be undone.`)) {
-        try {
+        try {  
             ArticleController.deleteArticle(id);
             alert('Article deleted successfully');
             renderAllArticles(); // Refresh the display

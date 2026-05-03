@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/styles.css">
+    
+    <!-- i18n Language Support -->
+    <script src="./js/i18n.js"></script>
 
 </head>
 
@@ -31,24 +34,31 @@
             <div class=" navbar-nav me-auto mb-2 mb-lg-0 collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="nav nav-underline align-items-center mx-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
+                        <a class="nav-link" href="index.html" data-i18n="nav_home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="articles.html">Learn</a>
+                        <a class="nav-link" href="articles.html" data-i18n="nav_learn">Learn</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
+                        <a class="nav-link" href="about.html" data-i18n="nav_about">About</a>
                     </li>
                 </ul>
 
                 <!-- right side of nav -->
                 <div class="d-flex align-items-center">
-                    <a class="nav-link me-2" href="#help">Help</a>
-                    <a class="btn btn-outline-primary btn-sm me-2" href="login.html">Sign In</a>
-                    <a class="btn btn-primary btn-sm me-2" href="register.html">Register</a>
+                    <a class="nav-link me-2" href="#help" data-i18n="nav_help">Help</a>
+                    <!-- Language Selector -->
+                    <select id="language-selector" class="form-select form-select-sm me-2" style="width: auto;" onchange="updateLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="zh">中文</option>
+                        <option value="ms">Bahasa Melayu</option>
+                        <option value="ta">தமிழ்</option>
+                    </select>
+                    <a class="btn btn-outline-primary btn-sm me-2" href="login.html" data-i18n="btn_signin">Sign In</a>
+                    <a class="btn btn-primary btn-sm me-2" href="register.html" data-i18n="btn_register">Register</a>
                     <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" data-i18n="btn_search" />
+                        <button class="btn btn-outline-success" type="submit" data-i18n="btn_search">Search</button>
                     </form>
                 </div>
             </div>
@@ -59,8 +69,8 @@
 
     <main class="container py-5">
         <div class="text-center mb-5">
-            <h1 class="display-4 fw-bold text-danger">Emergency Help</h1>
-            <p class="lead">If you think you have been scammed, <strong>stay calm</strong> and follow these steps immediately.</p>
+            <h1 class="display-4 fw-bold text-danger" data-i18n="emergency_title">Emergency Help</h1>
+            <p class="lead" data-i18n="emergency_subtitle">If you think you have been scammed, <strong>stay calm</strong> and follow these steps immediately.</p>
         </div>
 
         <div class="row g-4 justify-content-center">
@@ -69,9 +79,9 @@
                 <div class="emergency-card shadow-lg mb-4">
                     <div class="d-flex align-items-center mb-3">
                         <div class="step-number">1</div>
-                        <h2 class="h4 mb-0 fw-bold">Call Your Bank Immediately</h2>
+                        <h2 class="h4 mb-0 fw-bold" data-i18n="emergency_step1_title">Call Your Bank Immediately</h2>
                     </div>
-                    <p>Ask them to <strong>freeze your accounts</strong> and credit cards. Do this even if you aren't sure yet.</p>
+                    <p data-i18n="emergency_step1_text">Ask them to <strong>freeze your accounts</strong> and credit cards. Do this even if you aren't sure yet.</p>
                     <div class="row g-2">
                         <a href="tel:18003396963" class="col-6 col-md-3 text-black text-decoration-none"><div class="bank-contact text-center small"><strong>DBS/POSB</strong><br>1800 339 6963</div></a>
                         <a href="tel:18003633333" class="col-6 col-md-3 text-black text-decoration-none"><div class="bank-contact text-center small"><strong>OCBC</strong><br>1800 363 3333</div></a>
@@ -86,11 +96,11 @@
                 <div class="emergency-card shadow-lg mb-4">
                     <div class="d-flex align-items-center mb-3">
                         <div class="step-number">2</div>
-                        <h2 class="h4 mb-0 fw-bold">Call the Anti-Scam Hotline</h2>
+                        <h2 class="h4 mb-0 fw-bold" data-i18n="emergency_step2_title">Call the Anti-Scam Hotline</h2>
                     </div>
-                    <p>Get expert advice from the police on what to do next.</p>
-                    <a href="tel:18007226688" class="btn btn-danger btn-lg w-100 fw-bold py-3 mb-2">Call 1800-722-6688</a>
-                    <p class="text-muted small text-center">Available 24/7 for scam reports.</p>
+                    <p data-i18n="emergency_step2_text">Get expert advice from the police on what to do next.</p>
+                    <a href="tel:18007226688" class="btn btn-danger btn-lg w-100 fw-bold py-3 mb-2" data-i18n="emergency_step2_btn">Call 1800-722-6688</a>
+                    <p class="text-muted small text-center" data-i18n="emergency_step2_note">Available 24/7 for scam reports.</p>
                 </div>
             </div>
 
@@ -99,16 +109,16 @@
                 <div class="emergency-card shadow-lg mb-4">
                     <div class="d-flex align-items-center mb-3">
                         <div class="step-number">3</div>
-                        <h2 class="h4 mb-0 fw-bold">Make a Police Report</h2>
+                        <h2 class="h4 mb-0 fw-bold" data-i18n="emergency_step3_title">Make a Police Report</h2>
                     </div>
-                    <p>Go to the nearest Neighborhood Police Center or report online.</p>
-                    <a href="https://www.police.gov.sg/e-services" target="_blank" class="btn btn-outline-danger w-100">Submit Online Report</a>
+                    <p data-i18n="emergency_step3_text">Go to the nearest Neighborhood Police Center or report online.</p>
+                    <a href="https://www.police.gov.sg/e-services" target="_blank" class="btn btn-outline-danger w-100" data-i18n="emergency_step3_btn">Submit Online Report</a>
                 </div>
             </div>
         </div>
 
         <div class="text-center mt-5">
-            <a href="index.html" class="btn btn-secondary rounded-pill px-5">Back to Home</a>
+            <a href="index.html" class="btn btn-secondary rounded-pill px-5" data-i18n="emergency_back">Back to Home</a>
         </div>
     </main>
 
@@ -122,21 +132,21 @@
                         <img src="./imgs/logo.svg" alt="SilverGuide Logo" width="60" height="60"
                             class="d-inline-block align-text-top">
                     </a>
-                    <h6 class="text-body-secondary">Helping you navigate the digital world</h6>
-                    <p class="text-muted">&copy; 2026 The Silver Guide Website, All rights reserved.</p>
+                    <h6 class="text-body-secondary" data-i18n="footer_tagline">Helping you navigate the digital world</h6>
+                    <p class="text-muted" data-i18n="footer_copyright">&copy; 2026 The Silver Guide Website, All rights reserved.</p>
                 </div>
 
                 <!-- footer right side -->
                 <div class="col-md-6 text-end">
                     <ul class="list-unstyled mb-0">
                         <li class="nav-item mb-2">
-                            <a href="emergency.html" class="nav-link link-danger p-0 text-body-secondary">Emergency contacts</a>
+                            <a href="emergency.html" class="nav-link link-danger p-0 text-body-secondary" data-i18n="footer_emergency">Emergency contacts</a>
                         </li>
                         <li class="nav-item mb-2">
-                            <a href="about.html" class="nav-link link-primary p-0 text-body-secondary">About Us</a>
+                            <a href="about.html" class="nav-link link-primary p-0 text-body-secondary" data-i18n="footer_about">About Us</a>
                         </li>
                         <li class="nav-item mb-2">
-                            <a href="#faq" class="nav-link link-primary p-0 text-body-secondary">FAQs</a>
+                            <a href="#faq" class="nav-link link-primary p-0 text-body-secondary" data-i18n="footer_faqs">FAQs</a>
                         </li>
                     </ul>
                 </div>

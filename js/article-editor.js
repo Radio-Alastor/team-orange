@@ -1,3 +1,24 @@
+// ──For fetching url of image to be displayed in article ────────────────────────────
+class SimpleImage {
+    static get toolbox() {
+        return {
+            title: 'Image',
+            icon: '<svg width="17" height="15" viewBox="0 0 336 276" xmlns="http://www.w3.org/2000/svg"><path d="M291 150V79c0-19-15-34-34-34H79c-19 0-34 15-34 34v42l67-44 81 72 56-29 42 30zm0 52l-43-30-56 30-81-67-66 39v23c0 19 15 34 34 34h178c17 0 31-13 34-29zM79 0h178c44 0 79 35 79 79v118c0 44-35 79-79 79H79c-44 0-79-35-79-79V79C0 35 35 0 79 0z"/></svg>'
+        };
+    }
+    render() {
+        const input = document.createElement('input');
+        input.placeholder = 'Paste image URL here...';
+        input.className = 'form-control form-control-sm'; // Adds Bootstrap styling
+        return input;
+    }
+    save(blockContent) {
+        return {
+            url: blockContent.value
+        };
+    }
+}
+
 // ── Category metadata ────────────────────────────────────────────
 const CATEGORIES = {
     tech_tutorial: { label: 'Tech Tutorial', color: 'primary' },
@@ -122,6 +143,16 @@ const EDITOR_TOOLS = {
     image: SimpleImage,
     delimiter: Delimiter
 };
+
+// ── Saves progress if editor navigates or alt tab away from page ────────────────
+window.addEventListener('beforeunload', (event) => {
+    // If there is text in the title, warn the user before they leave
+    const title = document.getElementById('articleTitle')?.value;
+    if (title && title.length > 0) {
+        event.preventDefault();
+        event.returnValue = ''; 
+    }
+});
 
 // ── Editor State & Lifecycle ────────────────────────────────────
 let editor;
@@ -261,16 +292,16 @@ function onEditorReady() {
 }
 
 function onEditorChange(api) {
-    if (!editor) return;
+    if (!editor || editingArticleId) return; // DON'T save to the 'article-draft' key if we are editing a published article
     
     // Auto-save draft every change
     editor.save().then((data) => {
         const draft = {
             meta: {
-                title: document.getElementById('title')?.value || '',
-                category: document.getElementById('category')?.value || DEFAULT_META.category,
-                description: document.getElementById('description')?.value || '',
-                author: document.getElementById('author')?.value || ''
+                title: document.getElementById('articleTitle')?.value || '',
+                category: document.getElementById('articleCategory')?.value || DEFAULT_META.category,
+                description: document.getElementById('articleDesc')?.value || '',
+                author: document.getElementById('articleAuthor')?.value || ''
             },
             data: data
         };
@@ -287,7 +318,8 @@ async function handlePublish() {
     const category = document.getElementById('articleCategory')?.value;
     const description = document.getElementById('articleDesc')?.value?.trim();
     const author = document.getElementById('articleAuthor')?.value?.trim() || 'Admin';
-    
+    const heroImage = document.getElementById('heroImage')?.value?.trim() || './imgs/default-placeholder.png';
+
     if (!title || !description || !category) {
         alert('Please fill in all required fields (title, category, description).');
         return;
@@ -339,6 +371,7 @@ async function handlePublish() {
                 category,
                 description,
                 author,
+                heroImage,
                 content: editorData,
                 createdAt: new Date().toISOString()
             };
@@ -346,8 +379,7 @@ async function handlePublish() {
             const article = ArticleController.saveArticle(payload);
             if (article) {
                 alert(`Article "${title}" published successfully! Article ID: ${article.id}`);
-                clearEditorState();
-                location.href = 'articles.html';
+                clearEditorState();                
             } else {
                 alert('Failed to publish article.');
             }
@@ -357,9 +389,21 @@ async function handlePublish() {
 
 // Clear editing state and draft
 function clearEditorState() {
+    // 1. Remove tracking IDs and drafts
     editingArticleId = null;
     localStorage.removeItem('editingArticleId');
     localStorage.removeItem('article-draft');
+
+    // 2. Clear HTML inputs
+    document.getElementById('articleTitle').value = '';
+    document.getElementById('articleDesc').value = '';
+    document.getElementById('articleAuthor').value = 'Admin';
+    document.getElementById('heroImage').value = '';
+    
+    // 3. Clear the Editor.js blocks
+    if (editor && typeof editor.blocks?.clear === 'function') {
+        editor.blocks.clear();
+    }
 }
 
 // Convert Editor.js blocks to article HTML (for display)

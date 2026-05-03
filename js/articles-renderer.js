@@ -15,8 +15,6 @@ const TOPIC_MAP = {
 document.addEventListener('DOMContentLoaded', () => {
     renderAllArticles();
 
-    // Poll for new articles every 2 seconds (useful for multi-tab scenarios)
-    setInterval(renderAllArticles, 2000);
 });
 
 function renderAllArticles() {
@@ -32,28 +30,39 @@ function renderAllArticles() {
         return;
     }
 
-    // 3. Clear existing dynamic content (keep static placeholders if empty)
-    const existingCards = techBasicsContainer.querySelectorAll('[data-article-id]');
-    existingCards.forEach(card => card.remove());
+    // 3. Clear both containers completely of all dynamic cards
+    techBasicsContainer.innerHTML = '';
+    staySafeContainer.innerHTML = '';
 
-    const existingCards2 = staySafeContainer.querySelectorAll('[data-article-id]');
-    existingCards2.forEach(card => card.remove());
+    if (allArticles.length === 0) {
+        techBasicsContainer.innerHTML = '<p class="text-muted">No articles found.</p>';
+        return;
+    }
 
-    // 4. Render each article in its correct container based on TOPIC_MAP
+    // 4. Filter and render
     allArticles.forEach(article => {
         const cardHtml = createArticleCard(article);
-        // Use TOPIC_MAP to determine container
-        const containerKey = TOPIC_MAP[article.category] || 'topic-tech-basics';
-        const targetContainer = document.getElementById(containerKey);
+        const col = document.createElement('div');
+        col.className = 'col-md-6 col-lg-4'; // Standard Bootstrap grid sizing
+        col.setAttribute('data-article-id', article.id);
+        col.innerHTML = cardHtml;
+
+        // Use the map to find the right container
+        const containerId = TOPIC_MAP[article.category] || 'topic-tech-basics';
+        const targetContainer = document.getElementById(containerId);
 
         if (targetContainer) {
-            const col = document.createElement('div');
-            col.className = 'col';
-            col.setAttribute('data-article-id', article.id);
-            col.innerHTML = cardHtml;
             targetContainer.appendChild(col);
         }
     });
+
+    // 3. Handle Empty States (Optional but recommended)
+    if (techBasicsContainer.children.length === 0) {
+        techBasicsContainer.innerHTML = '<p class="text-muted ps-3">No technology guides available yet.</p>';
+    }
+    if (staySafeContainer.children.length === 0) {
+        staySafeContainer.innerHTML = '<p class="text-muted ps-3">No safety alerts available yet.</p>';
+    }
 }
 
 function createArticleCard(article) {
@@ -65,12 +74,13 @@ function createArticleCard(article) {
         'urgent_warning': { label: 'Urgent Warning', color: 'danger' },
         'scam_alert': { label: 'Scam Alert', color: 'warning' }
     };
-
+    // displays image from editor's metadata field:heroImage
+    const displayImg = article.heroImage || './imgs/default-placeholder.png';
     const cat = categoryMap[categoryKey] || { label: categoryKey, color: 'secondary' };
 
     return `
-        <div class="card article-card shadow-sm border-0 h-100">
-            <img src="${article.imageUrl || './imgs/default-placeholder.png'}" 
+        <div class="card article-card shadow-sm border-0 h-100" onclick="viewArticle(${article.id})">
+            <img src="${displayImg}" 
                  class="card-img-top" 
                  alt="${article.title}" 
                  style="height: 200px; object-fit: cover;">

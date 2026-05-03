@@ -41,19 +41,19 @@ function escapeHtml(text) {
 // Convert Editor.js blocks to HTML
 function blocksToHTML(blocks) {
     if (!Array.isArray(blocks)) return '';
-    
+
     return blocks.map(block => {
         if (!block || !block.data) return '';
-        
+
         const d = block.data;
         switch (block.type) {
             case 'paragraph':
                 return `<p>${escapeHtml(d.text)}</p>`;
-            
+
             case 'header':
                 const level = d.level || 2;
                 return `<h${level} class="section-title">${escapeHtml(d.text)}</h${level}>`;
-            
+
             case 'list':
                 const tag = d.style === 'ordered' ? 'ol' : 'ul';
                 const items = (d.items || []).map(item => {
@@ -61,21 +61,31 @@ function blocksToHTML(blocks) {
                     return `<li>${escapeHtml(content)}</li>`;
                 }).join('');
                 return `<${tag}>${items}</${tag}>`;
-            
+
             case 'quote':
                 return `<blockquote class="analogy"><em>${escapeHtml(d.text)}</em></blockquote>`;
-            
+
             case 'warning':
                 return `<div class="tip-box"><strong>${escapeHtml(d.title)}</strong><p>${escapeHtml(d.message)}</p></div>`;
-            
+
             case 'image':
-                const imageUrl = escapeHtml(d.url || (d.file?.url) || '');
-                const imageAlt = escapeHtml(d.caption || '');
-                return `<img src="${imageUrl}" alt="${imageAlt}" style="max-width: 100%; height: auto; margin: 1rem 0; border-radius: 8px;">`;
-            
+                // Prioritize d.url which matches SimpleImage save() method
+                const imgSource = d.url || d.imageUrl || d.file?.url || '';
+                // If there's no source, prevents render an empty broken image tag
+                if (!imgSource) return '';
+                // Define the "safe" variables by processing the raw data
+                const safeUrl = escapeHtml(imgSource);
+                const safeAlt = escapeHtml(d.caption || 'Article image');
+                //Uses variables in the HTML string
+                return `
+        <div class="text-center my-4">
+            <img src="${safeUrl}" alt="${safeAlt}" class="img-fluid rounded-3 shadow-sm">
+            ${d.caption ? `<p class="text-muted small mt-2">${escapeHtml(d.caption)}</p>` : ''}
+        </div>`;
+
             case 'delimiter':
                 return '<hr>';
-            
+
             default:
                 return '';
         }
@@ -96,7 +106,7 @@ function getCategoryInfo(category) {
 // Load and render the article
 async function loadAndRenderArticle() {
     const articleId = getArticleIdFromUrl();
-    
+
     if (!articleId) {
         showError();
         return;
@@ -105,7 +115,7 @@ async function loadAndRenderArticle() {
     try {
         // Fetch the article
         const article = ArticleController.getArticleById(parseInt(articleId));
-        
+
         if (!article) {
             showError();
             return;
@@ -113,7 +123,7 @@ async function loadAndRenderArticle() {
 
         // Render the article
         renderArticle(article);
-        
+
     } catch (error) {
         console.error('Error loading article:', error);
         showError();
@@ -133,45 +143,67 @@ function renderArticle(article) {
 
     // Set page title
     document.title = `${article.title} - Silver Guide`;
-    
+
     // Set breadcrumb title
     document.getElementById('breadcrumb-title').textContent = article.title;
-    
+
     // Set article title
     document.getElementById('article-title').textContent = article.title;
-    
+
     // Set category badge
     const categoryInfo = getCategoryInfo(article.category);
     document.getElementById('article-category').className = `badge ${categoryInfo.color}`;
     document.getElementById('article-category').textContent = categoryInfo.label;
-    
+
     // Set hero image
     const heroImg = document.getElementById('article-hero');
     heroImg.src = article.heroImage || './imgs/default-placeholder.png';
     heroImg.alt = article.title;
-    
+
     // Set metadata
     document.getElementById('article-author').textContent = article.author || 'Admin';
     document.getElementById('article-date').textContent = formatDate(article.createdAt);
     document.getElementById('article-description').textContent = article.description;
-    
+
+    // Render emergency help button if article is in scam alert or urgent warning category
+    const isScamRelated = article.category === 'scam_alert' || article.category === 'urgent_warning';
+    let panicButtonHtml = '';
+
+    if (isScamRelated) {
+        panicButtonHtml = `
+            <div class="alert alert-danger border-0 shadow-sm p-4 mb-4" style="border-radius: 1.5rem;">
+                <div class="d-flex align-items-center">
+                    <div class="me-3 fs-1">🚨</div>
+                    <div>
+                        <h4 class="fw-bold mb-1">Think you've been scammed?</h4>
+                        <p class="mb-2 text-dark">Don't wait. Every minute counts when protecting your money.</p>
+                        <a href="emergency.html" class="btn btn-danger fw-bold rounded-pill px-4">GET HELP NOW</a>
+                    </div>
+                </div>
+            </div>`;
+    }
+    // -----------------------------------
+
     // Render article content from Editor.js blocks
     const contentHtml = blocksToHTML(article.content?.blocks || []);
-    document.getElementById('article-content').innerHTML = contentHtml;
-    
+
+    // Inject both the panic button (if it exists) and the content
+    document.getElementById('article-content').innerHTML = panicButtonHtml + contentHtml;
+
     // Setup action buttons
     setupActionButtons(article.id);
 }
+
 
 // Setup edit and delete button handlers
 function setupActionButtons(articleId) {
     const editBtn = document.getElementById('edit-btn');
     const deleteBtn = document.getElementById('delete-btn');
-    
+
     if (editBtn) {
         editBtn.addEventListener('click', () => editArticleFromView(articleId));
     }
-    
+
     if (deleteBtn) {
         deleteBtn.addEventListener('click', () => deleteArticleFromView(articleId));
     }
@@ -187,12 +219,12 @@ function editArticleFromView(articleId) {
 // Delete article
 function deleteArticleFromView(articleId) {
     const article = ArticleController.getArticleById(articleId);
-    
+
     if (!article) {
         alert('Article not found.');
         return;
     }
-    
+
     if (confirm(`Are you sure you want to delete "${article.title}"? This cannot be undone.`)) {
         try {
             ArticleController.deleteArticle(articleId);

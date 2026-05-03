@@ -84,7 +84,8 @@ a {
   position: relative;
   /* Essential for stacking layers */
   width: 100%;
-  aspect-ratio: 1 / 1;  /* Forces a perfect square */
+  aspect-ratio: 1 / 1;
+  /* Forces a perfect square */
   overflow: hidden;
   border-radius: 25%;
   /* Matches your soft-corner look */
@@ -92,22 +93,24 @@ a {
 }
 
 /* 2. The Shared Styles for Image and Video */
-.team-img, .team-video {
+.team-img,
+.team-video {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;  /* Crops the image to fill the square without stretching */
+  object-fit: cover;
+  /* Crops the image to fill the square without stretching */
   transition: opacity 0.4s ease-in-out;
   /* Smooth transition */
 }
 
 /* --- Style for portrait redirect to portfolio page --- */
 .portrait-link {
-    display: block;
-    text-decoration: none;
-    cursor: pointer;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 /* Optional: Adds a subtle hover effect to show life on the page */
@@ -122,7 +125,7 @@ a {
   z-index: 1;
 }
 
-.static-img{
+.static-img {
   opacity: 1;
   z-index: 2;
 }
@@ -140,104 +143,150 @@ a {
 
 /* --- SOCIAL LINKS --- */
 .social-links .btn {
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    line-height: 30px;
-    font-size: 0.8rem;
-    transition: all 0.3s ease;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  line-height: 30px;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
 }
+
 .social-links .btn:hover {
-    transform: translateY(-3px);
-    background-color: #1a1a1a;
-    color: white;
+  transform: translateY(-3px);
+  background-color: #1a1a1a;
+  color: white;
 }
 
 /* Ensure horizontal scroll doesn't hide the social icons */
 .team-card {
-    padding-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 /* 5. BIO BOX STYLES */
 .bio-wrapper {
-    position: relative;
-    margin-top: 10px;
-    padding: 0 5px;
-    text-align: left; /* Better for readability */
+  position: relative;
+  margin-top: 10px;
+  padding: 0 5px;
+  text-align: left;
+  /* Better for readability */
 }
 
 .bio-text {
-    font-size: 0.9rem;
-    line-height: 1.4;
-    color: #444;
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* Shows exactly 2 lines before cutting off */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    transition: all 0.3s ease;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #444;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* Shows exactly 2 lines before cutting off */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 /* The "Read More" button disguised as "..." */
 .bio-more-btn {
-    cursor: pointer;
-    color: #007bff;
-    font-weight: bold;
-    font-size: 0.9rem;
-    display: inline-block;
+  cursor: pointer;
+  color: #007bff;
+  font-weight: bold;
+  font-size: 0.9rem;
+  display: inline-block;
 }
 
 .bio-more-btn::before {
-    content: "... Read more";
+  content: "... Read more";
 }
 
 /* Hide the checkbox */
 .bio-toggle {
-    display: none;
+  display: none;
 }
 
 /* When Read more is clicked, expand the text */
-.bio-toggle:checked ~ .bio-text {
-    -webkit-line-clamp: unset; /* Removes the 2-line limit */
-    overflow: visible;
+.bio-toggle:checked~.bio-text {
+  -webkit-line-clamp: unset;
+  /* Removes the 2-line limit */
+  overflow: visible;
 }
 
 /* 6. SCROLLBAR FAMILIARITY */
 .custom-scrollbar::-webkit-scrollbar {
-    height: 15px !important; /* Making it thick enough for elderly users to see */
-    display: block !important;
+  height: 15px !important;
+  /* Making it thick enough for elderly users to see */
+  display: block !important;
 }
+
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: #f8f9fa;
-    border-radius: 10px;
-    border: 1px solid #ddd;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid #ddd;
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #75adf6; /* Using blue palette theme color */
-    border-radius: 10px;
-    border: 2px solid #f8f9fa; /* Creates a padding effect around the thumb */
+  background: #75adf6;
+  /* Using blue palette theme color */
+  border-radius: 10px;
+  border: 2px solid #f8f9fa;
+  /* Creates a padding effect around the thumb */
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #5a96e0;
+  background: #5a96e0;
 }
+
 /* Targets the labeled container */
 
 
 /* 7. CTA BOX */
 .cta-box {
-    transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
+
 .cta-box:hover {
-    transform: translateY(-5px);
+  transform: translateY(-5px);
 }
+
 .cta-box h3 {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 
-/* --- HELP --- */
+/* --- EMERGENCY --- */
+.emergency-card {
+  border: 3px solid #dc3545;
+  border-radius: 2rem;
+  background: white;
+  padding: 2rem;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  background: #dc3545;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.bank-contact {
+  border: 1px solid #dee2e6;
+  border-radius: 1rem;
+  padding: 1rem;
+  transition: transform 0.2s, background-color 0.3s ease;
+}
+
+.bank-contact:hover {
+  transform: scale(1.02);
+  background-color: #dc3545;  
+  color: white;
+  border-color: #dee2e6;
+}
 
 /* --- FOOTER --- */
-
 
 
 /* --- MEDIA QUERIES --- */

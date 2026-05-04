@@ -40,18 +40,18 @@
     <!-- Off-canvas sidebar for mobile (visible only on small screens) -->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
         <div class="offcanvas-header">
-            <img src="./imgs/logo-rec1.svg" class="mx-auto"  width="164" alt="logo in white">
+            <img src="./imgs/logo-rec1.svg" class="mx-auto" width="164" alt="logo in blue">
         </div>
         <div class="offcanvas-body">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link active text-black" href="dashboard.html">
+                    <a class="nav-link text-black" href="dashboard.html">
                         <i class="bi bi-graph-up me-2"></i>
                         Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-black" href="users.html">
+                    <a class="nav-link active text-black" href="users.html">
                         <i class="bi bi-person-rolodex me-2"></i>
                         Users
                     </a>
@@ -90,13 +90,13 @@
                     <!-- Side nav links -->
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" href="dashboard.html">
+                            <a class="nav-link" href="dashboard.html">
                                 <i class="bi bi-graph-up me-2"></i>
                                 Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="users.html">
+                            <a class="nav-link active" href="users.html">
                                 <i class="bi bi-person-rolodex me-2"></i>
                                 Users
                             </a>
@@ -126,7 +126,7 @@
             <!-- TODO Main content area -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2 text-black">Dashboard</h1>
+                    <h1 class="h2 text-black">Users</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <button class="btn btn-sm btn-outline-secondary">Export</button>
                     </div>
@@ -137,33 +137,33 @@
                     <div class="col-md-4">
                         <div class="card text-white bg-success mb-3">
                             <div class="card-body">
-                                <h5 class="card-title"><i class="bi bi-people me-2"></i>Unique visitors</h5>
-                                <h3 class="card-text">1,234</h3>
+                                <h5 class="card-title"><i class="bi bi-person-fill-check me-2"></i>New Signups</h5>
+                                <h3 class="card-text">1,854</h3>
                                 <small>↑ 12% vs last month</small>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card text-white bg-primary mb-3">
+                        <div class="card text-white bg-success mb-3">
                             <div class="card-body">
-                                <h5 class="card-title"><i class="bi bi-stopwatch me-2"></i>Avg Session Duration</h5>
-                                <h3 class="card-text">$5,678</h3>
+                                <h5 class="card-title"><i class="bi bi-person-arms-up me-2"></i>Active Users</h5>
+                                <h3 class="card-text">5,908</h3>
                                 <small>↑ 8% vs last month</small>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card text-white bg-danger mb-3">
+                        <div class="card text-white bg-success mb-3">
                             <div class="card-body">
-                                <h5 class="card-title"><i class="bi bi-chevron-bar-down me-2"></i>Bounce Rate</h5>
-                                <h3 class="card-text">42</h3>
+                                <h5 class="card-title"><i class="bi bi-clock-history me-2"></i>Time Spent</h5>
+                                <h3 class="card-text">02 hrs</h3>
                                 <small>↓ 3% vs last month</small>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- TODO Dashboard Table -->
+                <!-- TODO Users Table -->
                 <div class="card mt-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i> All Users

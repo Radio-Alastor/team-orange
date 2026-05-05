@@ -165,30 +165,49 @@ function renderArticle(article) {
     document.getElementById('article-date').textContent = formatDate(article.createdAt);
     document.getElementById('article-description').textContent = article.description;
 
-    // Render emergency help button if article is in scam alert or urgent warning category
+    // Separate TLDR from main content
+    const blocks = article.content?.blocks || [];
+    const tldrBlock = blocks.find(b => b.type === 'warning' && b.data?.title?.toLowerCase().includes('tldr'));
+    const mainContentBlocks = blocks.filter(b => !(b.type === 'warning' && b.data?.title?.toLowerCase().includes('tldr')));
+
+    // Render TLDR section at the top
+    let tldrHtml = '';
+    if (tldrBlock) {
+        tldrHtml = `
+            <div class="mb-5 p-4 rounded-3" style="background-color: #e3f2fd; border-left: 4px solid #1976d2;">
+                <div class="d-flex align-items-start">
+                    <span class="me-3 fs-4">⭐</span>
+                    <div class="flex-grow-1">
+                        <h3 class="fw-bold mb-3" style="color: #1565c0;">${escapeHtml(tldrBlock.data.title)}</h3>
+                        <p class="mb-0" style="color: #333;">${escapeHtml(tldrBlock.data.message)}</p>
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    // Render main content from remaining blocks
+    const contentHtml = blocksToHTML(mainContentBlocks);
+
+    // Render emergency help button at the END if article is in scam alert or urgent warning category
     const isScamRelated = article.category === 'scam_alert' || article.category === 'urgent_warning';
     let panicButtonHtml = '';
 
     if (isScamRelated) {
         panicButtonHtml = `
-            <div class="alert alert-danger border-0 shadow-sm p-4 mb-4" style="border-radius: 1.5rem;">
+            <div class="mt-5 p-4 rounded-3 border-0 shadow-sm" style="background-color: #ffebee;">
                 <div class="d-flex align-items-center">
-                    <div class="me-3 fs-1">🚨</div>
-                    <div>
-                        <h4 class="fw-bold mb-1">Think you've been scammed?</h4>
-                        <p class="mb-2 text-dark">Don't wait. Every minute counts when protecting your money.</p>
+                    <div class="me-4 fs-1">🚨</div>
+                    <div class="flex-grow-1">
+                        <h4 class="fw-bold mb-2" style="color: #d32f2f;">Think you've been scammed?</h4>
+                        <p class="mb-3" style="color: #c62828;">Don't wait. Every minute counts when protecting your money.</p>
                         <a href="emergency.html" class="btn btn-danger fw-bold rounded-pill px-4">GET HELP NOW</a>
                     </div>
                 </div>
             </div>`;
     }
-    // -----------------------------------
 
-    // Render article content from Editor.js blocks
-    const contentHtml = blocksToHTML(article.content?.blocks || []);
-
-    // Inject both the panic button (if it exists) and the content
-    document.getElementById('article-content').innerHTML = panicButtonHtml + contentHtml;
+    // Inject TLDR + content + panic button (in that order)
+    document.getElementById('article-content').innerHTML = tldrHtml + contentHtml + panicButtonHtml;
 
     // Setup action buttons
     setupActionButtons(article.id);

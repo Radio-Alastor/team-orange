@@ -92,7 +92,13 @@ export default function ArticleEditor() {
       const Quote = (await import("@editorjs/quote")).default;
       const Warning = (await import("@editorjs/warning")).default;
       const Delimiter = (await import("@editorjs/delimiter")).default;
+      const Underline = (await import("@editorjs/underline")).default;
+      const Marker = (await import("@editorjs/marker")).default;
+      const InlineCode = (await import("@editorjs/inline-code")).default;
+      const Strikethrough = (await import("@sotaproject/strikethrough")).default;
+
       const { default: SimpleImage } = await import("../../tools/SimpleImage");
+      const { default: ScamAlertTool } = await import("../../tools/ScamAlertTool");
 
       if (cancelled) return;
 
@@ -116,6 +122,11 @@ export default function ArticleEditor() {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           image: SimpleImage as any,
           delimiter: Delimiter,
+          scam_alert: ScamAlertTool as any,
+          underline: Underline,
+          marker: Marker,
+          inlineCode: InlineCode,
+          strikethrough: Strikethrough,
         },
         onReady: () => { console.log("Editor.js ready"); },
         onChange: async (api) => {

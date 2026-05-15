@@ -28,7 +28,7 @@ type Block = {
   data: any;
 };
 
-const ALLOWED_TAGS = new Set(["b", "strong", "i", "em", "u", "a", "br"]);
+const ALLOWED_TAGS = new Set(["b", "strong", "i", "em", "u", "a", "br", "mark", "code", "s", "strike", "del"]);
 
 function sanitize(html: string): string {
   return html.replace(/<(\/?)([a-zA-Z][a-zA-Z0-9]*)([^>]*)>/g, (_, close, tag, attrs) => {
@@ -96,6 +96,21 @@ function renderBlocks(blocks: Block[]) {
       );
     }
 
+    if (type === "scam_alert") {
+      return (
+        <div key={i} className="alert alert-danger border-0 shadow-sm p-4 mb-4" style={{ borderRadius: '1.5rem' }}>
+          <div className="d-flex align-items-center">
+            <div className="me-3 fs-1">🚨</div>
+            <div>
+              <h4 className="fw-bold mb-1">Think you've been scammed?</h4>
+              <p className="mb-2 text-dark">Don't wait. Every minute counts when protecting your money.</p>
+              <Link to="/emergency" className="btn btn-danger fw-bold rounded-pill px-4">GET HELP NOW</Link>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     if (type === "delimiter") {
       return <hr key={i} className="my-4" />;
     }
@@ -126,6 +141,7 @@ function blocksToText(blocks: Block[]): string {
           .join(". ");
       if (type === "quote") return data.text ?? "";
       if (type === "warning") return `${data.title ?? ""}: ${data.message ?? ""}`;
+      if (type === "scam_alert") return "Think you've been scammed? Don't wait. Every minute counts when protecting your money. Get help now.";
       return "";
     })
     .filter(Boolean)

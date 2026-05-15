@@ -1,0 +1,9 @@
+declare module "@editorjs/marker";
+declare module "@editorjs/underline";
+declare module "@editorjs/inline-code";
+declare module "@sotaproject/strikethrough";
+declare module "@editorjs/header";
+declare module "@editorjs/list";
+declare module "@editorjs/quote";
+declare module "@editorjs/warning";
+declare module "@editorjs/delimiter";

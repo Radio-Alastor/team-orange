@@ -25,6 +25,7 @@ public class ArticleController {
         return ResponseEntity.ok(articleService.getRecentByTopic(topicId));
     }
 
+    @PreAuthorize("hasRole('STAFF')")
     @PostMapping
     public ResponseEntity<ArticleResponse> createArticle(
             @RequestBody ArticleRequest req,

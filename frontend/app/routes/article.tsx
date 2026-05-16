@@ -3,6 +3,8 @@ import { apiFetch } from "../lib/api";
 import PageSpinner from "../components/PageSpinner";
 import { getToken, getUser } from "../lib/auth";
 import ChatWidget from "../components/ChatWidget";
+import LikeButton from "../components/LikeButton";
+import CommentSection from "../components/CommentSection";
 
 export async function clientLoader({ params }: { params: Record<string, string> }) {
   try {
@@ -215,6 +217,12 @@ export default function ArticlePage() {
           )}
 
           {renderBlocks(blocks)}
+
+          <div className="d-flex align-items-center mt-4 mb-2">
+            <LikeButton articleId={article.id} />
+          </div>
+
+          <CommentSection articleId={article.id} />
 
           <div className="text-center mt-5">
             <Link to="/articles" className="btn btn-outline-secondary btn-lg rounded-pill px-5">

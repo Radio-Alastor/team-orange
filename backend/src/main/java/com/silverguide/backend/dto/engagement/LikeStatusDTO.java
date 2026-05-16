@@ -1,0 +1,13 @@
+package com.silverguide.backend.dto.engagement;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class LikeStatusDTO {
+    private long totalLikes;
+    private boolean hasLiked;
+}

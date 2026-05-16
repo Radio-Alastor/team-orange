@@ -8,4 +8,5 @@ import java.util.List;
 public interface EngagementCommentRepository extends JpaRepository<EngagementComment, String> {
     List<EngagementComment> findByArticleId(Long articleId);
     List<EngagementComment> findByUserId(String userId);
+    org.springframework.data.domain.Page<EngagementComment> findByArticleIdOrderByCreatedAtDesc(Long articleId, org.springframework.data.domain.Pageable pageable);
 }

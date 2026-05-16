@@ -10,4 +10,5 @@ public interface EngagementLikeRepository extends JpaRepository<EngagementLike, 
     List<EngagementLike> findByArticleId(Long articleId);
     Optional<EngagementLike> findByUserIdAndArticleId(String userId, Long articleId);
     boolean existsByUserIdAndArticleId(String userId, Long articleId);
+    long countByArticleId(Long articleId);
 }

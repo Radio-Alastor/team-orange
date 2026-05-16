@@ -79,7 +79,7 @@ export default function Register() {
   }
 
   return (
-    <div className="min-vh-100 d-flex align-items-center py-5" style={{ backgroundColor: "#f8f9fa" }}>
+    <div className="min-vh-100 d-flex align-items-center py-5">
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-12 col-sm-10 col-md-8 col-lg-5">

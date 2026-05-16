@@ -1,36 +1,54 @@
 import { useRef } from "react";
+import { Link } from "react-router";
+import { TEAM_MEMBERS, type TeamMember } from "../config/team";
 
 export function meta() {
   return [{ title: "Silver Guide - About" }];
 }
 
-const TEAM = [
-  { img: "/imgs/ElderlyChristine.jpg", video: "/videos/OldChristineVid.mp4", name: "Christine", role: "Lead Designer" },
-  { img: "/imgs/ElderlyEkHong.jpg", video: "/videos/OldEkHongVid.mp4", name: "Ek Hong", role: "Database expert" },
-  { img: "/imgs/ElderlyKelvin.jpg", video: "/videos/OldKelvinVid.mp4", name: "Kelvin", role: "AI expert" },
-  { img: "/imgs/ElderlyKimShee.jpg", video: "/videos/OldKimSheeVid.mp4", name: "Kim Shee", role: "Infrastructure expert" },
-];
-
-function TeamCard({ member }: { member: (typeof TEAM)[number] }) {
+function TeamCard({ member, index }: { member: TeamMember; index: number }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const checkboxId = `bio-check-${index}`;
 
   return (
     <div className="col-6 col-md-3">
-      <div
-        className="portrait-container border border-dark"
-        onMouseEnter={() => videoRef.current?.play()}
-        onMouseLeave={() => {
-          const v = videoRef.current;
-          if (v) { v.pause(); v.currentTime = 0; }
-        }}
-      >
-        <img src={member.img} alt={member.name} className="team-img static-img" />
-        <video ref={videoRef} className="team-video" muted loop playsInline>
-          <source src={member.video} type="video/mp4" />
-        </video>
+      <div className="team-card">
+        <a href={member.portfolioUrl} target="_blank" rel="noreferrer" className="portrait-link">
+          <div
+            className="portrait-container border border-dark"
+            onMouseEnter={() => videoRef.current?.play()}
+            onMouseLeave={() => {
+              const v = videoRef.current;
+              if (v) { v.pause(); v.currentTime = 0; }
+            }}
+          >
+            <img src={member.img} alt={member.name} className="team-img static-img" />
+            <video ref={videoRef} className="team-video" muted loop playsInline>
+              <source src={member.video} type="video/mp4" />
+            </video>
+          </div>
+        </a>
+
+        <h4 className="mt-3 mb-0">{member.name}</h4>
+        <p className="text-muted">{member.role}</p>
+
+        <div className="social-links mb-3">
+          <a href={member.linkedinUrl} target="_blank" rel="noreferrer" className="btn btn-outline-dark btn-sm rounded-circle mx-1">
+            <i className="bi bi-linkedin"></i>
+          </a>
+          <a href={member.githubUrl} target="_blank" rel="noreferrer" className="btn btn-outline-dark btn-sm rounded-circle mx-1">
+            <i className="bi bi-github"></i>
+          </a>
+        </div>
+
+        <div className="bio-wrapper">
+          <input type="checkbox" id={checkboxId} className="bio-toggle" />
+          <p className="bio-text">
+            {member.bio}
+          </p>
+          <label htmlFor={checkboxId} className="bio-more-btn"></label>
+        </div>
       </div>
-      <h4 className="mt-3 mb-0">{member.name}</h4>
-      <p className="text-muted">{member.role}</p>
     </div>
   );
 }
@@ -98,14 +116,31 @@ export default function About() {
         {/* Meet our team */}
         <div className="text-center py-5">
           <h2 className="mb-5">Meet our team</h2>
-          <div className="row g-4 flex-nowrap overflow-auto pb-3">
-            {TEAM.map((member) => (
-              <TeamCard key={member.name} member={member} />
+          
+          <div className="d-md-none text-muted mb-2 small">
+            <i className="bi bi-arrow-left-right"></i> Scroll for more →
+          </div>
+
+          <div className="row g-4 flex-nowrap overflow-auto pb-4 custom-scrollbar">
+            {TEAM_MEMBERS.map((member, index) => (
+              <TeamCard key={member.name} member={member} index={index} />
             ))}
+          </div>
+
+          {/* Final CTA Box */}
+          <div className="row mt-5">
+            <div className="col-12">
+              <div className="cta-box p-5 rounded-4 border border-2 border-dark" style={{ backgroundColor: '#f8f9fa' }}>
+                <h3>Ready to start learning?</h3>
+                <p className="lead">Explore our easy-to-follow resources designed specifically for you.</p>
+                <Link to="/articles" className="btn btn-primary btn-lg px-5 mt-3 shadow-sm">
+                  View Learning Portal
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
     </>
   );
 }

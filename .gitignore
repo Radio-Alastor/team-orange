@@ -38,6 +38,8 @@ build/
 .env.development.local
 .env.test.local
 .env.production.local
+backend/src/main/resources/application-debug.properties
+backend/src/main/resources/application-local.properties
 
 # TypeScript
 *.tsbuildinfo

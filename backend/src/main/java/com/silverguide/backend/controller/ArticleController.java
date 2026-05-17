@@ -25,7 +25,7 @@ public class ArticleController {
         return ResponseEntity.ok(articleService.getRecentByTopic(topicId));
     }
 
-    @PreAuthorize("hasRole('STAFF')")
+    @PreAuthorize("hasAnyRole('STAFF', 'SUPERUSER')")
     @PostMapping
     public ResponseEntity<ArticleResponse> createArticle(
             @RequestBody ArticleRequest req,
@@ -40,14 +40,14 @@ public class ArticleController {
         return ResponseEntity.ok(articleService.getArticle(id));
     }
 
-    @PreAuthorize("hasRole('STAFF')")
+    @PreAuthorize("hasAnyRole('STAFF', 'SUPERUSER')")
     @PutMapping("/{id}")
     public ResponseEntity<ArticleResponse> updateArticle(
             @PathVariable Long id, @RequestBody ArticleRequest req) {
         return ResponseEntity.ok(articleService.updateArticle(id, req));
     }
 
-    @PreAuthorize("hasRole('STAFF')")
+    @PreAuthorize("hasAnyRole('STAFF', 'SUPERUSER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteArticle(@PathVariable Long id) {
         articleService.deleteArticle(id);

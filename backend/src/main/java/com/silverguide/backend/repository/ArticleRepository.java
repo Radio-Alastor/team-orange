@@ -12,6 +12,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findByUserId(String userId);
     List<Article> findByTopicId(Long topicId);
 
-    @Query("SELECT a FROM Article a WHERE a.topic.id = :topicId AND a.deletedAt IS NULL ORDER BY a.createdAt DESC")
+    @Query("SELECT a FROM Article a WHERE a.topic.id = :topicId AND a.status = 'PUBLISHED' ORDER BY a.createdAt DESC")
     List<Article> findRecentByTopic(@Param("topicId") Long topicId, Pageable pageable);
 }

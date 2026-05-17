@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import { apiFetch } from "../lib/api";
 import { setAuth } from "../lib/auth";
 
@@ -9,10 +9,21 @@ export function meta() {
 
 export default function Login() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [infoMessage, setInfoMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const reason = searchParams.get("reason");
+    if (reason === "expired") {
+      setInfoMessage("Your session has expired. Please log in again to continue.");
+    } else if (reason === "unauthorized") {
+      setInfoMessage("You must be logged in to view that page.");
+    }
+  }, [searchParams]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -66,6 +77,14 @@ export default function Login() {
                 <h5 className="fw-bold mb-1">Welcome Back</h5>
                 <p className="text-muted mb-0">Sign in to your account</p>
               </div>
+
+              {/* Info alert for redirect reasons */}
+              {infoMessage && (
+                <div className="alert alert-info alert-dismissible" role="alert">
+                  {infoMessage}
+                  <button type="button" className="btn-close" onClick={() => setInfoMessage(null)} aria-label="Close" />
+                </div>
+              )}
 
               {/* Error alert */}
               {error && (

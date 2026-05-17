@@ -3,6 +3,7 @@ package com.silverguide.backend.service;
 import com.silverguide.backend.dto.ArticleRequest;
 import com.silverguide.backend.dto.ArticleResponse;
 import com.silverguide.backend.entity.Article;
+import com.silverguide.backend.entity.ArticleStatus;
 import com.silverguide.backend.entity.Topic;
 import com.silverguide.backend.entity.User;
 import com.silverguide.backend.repository.ArticleRepository;
@@ -46,6 +47,7 @@ public class ArticleService {
                 .build();
 
         article = articleRepository.save(article);
+        
         return toResponse(article);
     }
 
@@ -70,6 +72,7 @@ public class ArticleService {
         article.setImgUrl(req.getImageUrl());
         article.setContent(req.getContent());
         article.setTopic(topic);
+
         return toResponse(articleRepository.save(article));
     }
 

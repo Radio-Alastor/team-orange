@@ -73,14 +73,24 @@ export default function Navbar() {
                 </NavLink>
               </li>
               {user?.staff && (
-                <li className="nav-item">
-                  <NavLink
-                    className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
-                    to="/editor"
-                  >
-                    Editor
-                  </NavLink>
-                </li>
+                <>
+                  <li className="nav-item">
+                    <NavLink
+                      className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+                      to="/editor"
+                    >
+                      Editor
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink
+                      className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+                      to="/admin"
+                    >
+                      Admin
+                    </NavLink>
+                  </li>
+                </>
               )}
             </ul>
             <div className="d-flex align-items-center gap-2">

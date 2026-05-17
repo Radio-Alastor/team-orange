@@ -10,15 +10,15 @@ import BlockReference from "./BlockReference";
 
 export async function clientLoader({ request }: { request: Request }) {
   const token = getToken();
-  if (!token) throw redirect("/login");
+  if (!token) throw redirect("/login?reason=unauthorized");
 
   const res = await apiFetch("/api/auth/me", {
     headers: { Authorization: `Bearer ${token}` },
   });
-  if (!res.ok) throw redirect("/login");
+  if (!res.ok) throw redirect("/login?reason=expired");
 
   const me = await res.json();
-  if (!me.staff) throw redirect("/login");
+  if (!me.staff) throw redirect("/login?reason=unauthorized");
 
   let topics: Topic[] = [];
   try {
@@ -67,7 +67,6 @@ export default function ArticleEditor() {
   const [description, setDescription] = useState(article?.description ?? "");
   const [heroImage, setHeroImage] = useState(article?.imgUrl ?? "");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [hasDraft, setHasDraft] = useState(() => !!localStorage.getItem("articleEditorDraft"));
 
   function validate() {
     const e: Record<string, string> = {};
@@ -129,11 +128,6 @@ export default function ArticleEditor() {
           strikethrough: Strikethrough,
         },
         onReady: () => { console.log("Editor.js ready"); },
-        onChange: async (api) => {
-          const data = await api.saver.save();
-          localStorage.setItem("articleEditorDraft", JSON.stringify(data));
-          setHasDraft(true);
-        },
       });
 
       editorInstanceRef.current = ed;
@@ -146,12 +140,6 @@ export default function ArticleEditor() {
     };
   }, []);
 
-  async function loadDraft() {
-    const draft = localStorage.getItem("articleEditorDraft");
-    if (!draft) return;
-    await editorInstanceRef.current?.render(JSON.parse(draft));
-  }
-
   async function loadExample() {
     if (!confirm("This will replace the current content with the example article. Continue?")) return;
     await editorInstanceRef.current?.render(DEFAULT_DATA);
@@ -162,14 +150,7 @@ export default function ArticleEditor() {
     setHeroImage(DEFAULT_META.heroImage);
   }
 
-  async function saveJSON() {
-    const data = await editorInstanceRef.current?.save();
-    localStorage.removeItem("articleEditorJSON");
-    localStorage.setItem("articleEditorJSON", JSON.stringify(data));
-    alert("Editor content saved to localStorage (key: articleEditorJSON).");
-  }
-
-  async function saveToBackend() {
+  async function saveToBackend(status: "DRAFT" | "PUBLISHED" = "PUBLISHED") {
     const fieldErrors = validate();
     if (Object.keys(fieldErrors).length > 0) {
       setErrors(fieldErrors);
@@ -184,7 +165,8 @@ export default function ArticleEditor() {
       summary: description,
       imageUrl: heroImage,
       content: JSON.stringify(editorData),
-      published: false,
+      published: status === "PUBLISHED",
+      status: status
     };
 
     const token = getToken();
@@ -204,7 +186,6 @@ export default function ArticleEditor() {
       if (res.status === 401) { alert("Session expired — please sign in again."); return; }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const saved = await res.json();
-      localStorage.removeItem("articleEditorDraft");
       navigate(`/articles/${saved.id}/${slugify(saved.title)}`);
     } catch (err) {
       console.warn("Backend not available, payload logged:", payload);
@@ -221,10 +202,9 @@ export default function ArticleEditor() {
             <p className="text-muted">{article ? "Update an existing Silver Guide article" : "Write and publish a new Silver Guide article"}</p>
           </div>
           <div className="d-flex gap-2 flex-wrap">
-            <button onClick={loadDraft} disabled={!hasDraft} className="btn btn-outline-secondary">Load Draft</button>
-            <button onClick={saveJSON} className="btn btn-outline-secondary">Save Draft</button>
+            <button onClick={() => saveToBackend("DRAFT")} className="btn btn-outline-secondary">Save Draft</button>
             <button onClick={loadExample} className="btn btn-outline-secondary">Load Example</button>
-            <button onClick={saveToBackend} className="btn btn-success fw-bold">{article ? "Update Article" : "Save to Backend"}</button>
+            <button onClick={() => saveToBackend("PUBLISHED")} className="btn btn-success fw-bold">{article ? "Update Article" : "Publish Article"}</button>
           </div>
         </div>
 

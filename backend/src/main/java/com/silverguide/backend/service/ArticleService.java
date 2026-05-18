@@ -60,6 +60,20 @@ public class ArticleService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public org.springframework.data.domain.Page<ArticleResponse> getPaginatedByTopic(Long topicId, org.springframework.data.domain.Pageable pageable) {
+        return articleRepository
+                .findPublishedByTopic(topicId, pageable)
+                .map(this::toResponse);
+    }
+
+    @Transactional(readOnly = true)
+    public org.springframework.data.domain.Page<ArticleResponse> searchArticles(String keyword, org.springframework.data.domain.Pageable pageable) {
+        return articleRepository
+                .searchPublishedArticles(keyword, pageable)
+                .map(this::toResponse);
+    }
+
     @Transactional
     public ArticleResponse updateArticle(Long id, ArticleRequest req) {
         Article article = articleRepository.findById(id)

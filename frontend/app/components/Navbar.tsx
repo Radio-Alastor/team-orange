@@ -95,7 +95,7 @@ export default function Navbar() {
             </ul>
             <div className="d-flex align-items-center gap-2">
               <Link className="text-danger fw-bold me-3 text-decoration-none" to="/emergency">
-                🚨 Emergency
+                🚨 Help-Line
               </Link>
               {user ? (
                 <>

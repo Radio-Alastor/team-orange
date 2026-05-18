@@ -25,6 +25,44 @@ public class ArticleController {
         return ResponseEntity.ok(articleService.getRecentByTopic(topicId));
     }
 
+    @GetMapping("/topic/{topicId}")
+    public ResponseEntity<org.springframework.data.domain.Page<ArticleResponse>> getPaginatedByTopic(
+            @PathVariable Long topicId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "createdAt,desc") String sort) {
+        
+        String[] sortParams = sort.split(",");
+        org.springframework.data.domain.Sort.Direction direction = 
+            sortParams.length > 1 && sortParams[1].equalsIgnoreCase("asc") ? 
+            org.springframework.data.domain.Sort.Direction.ASC : 
+            org.springframework.data.domain.Sort.Direction.DESC;
+        
+        org.springframework.data.domain.PageRequest pageRequest = 
+            org.springframework.data.domain.PageRequest.of(page, size, org.springframework.data.domain.Sort.by(direction, sortParams[0]));
+            
+        return ResponseEntity.ok(articleService.getPaginatedByTopic(topicId, pageRequest));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<org.springframework.data.domain.Page<ArticleResponse>> searchArticles(
+            @RequestParam("q") String query,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "createdAt,desc") String sort) {
+            
+        String[] sortParams = sort.split(",");
+        org.springframework.data.domain.Sort.Direction direction = 
+            sortParams.length > 1 && sortParams[1].equalsIgnoreCase("asc") ? 
+            org.springframework.data.domain.Sort.Direction.ASC : 
+            org.springframework.data.domain.Sort.Direction.DESC;
+        
+        org.springframework.data.domain.PageRequest pageRequest = 
+            org.springframework.data.domain.PageRequest.of(page, size, org.springframework.data.domain.Sort.by(direction, sortParams[0]));
+            
+        return ResponseEntity.ok(articleService.searchArticles(query, pageRequest));
+    }
+
     @PreAuthorize("hasAnyRole('STAFF', 'SUPERUSER')")
     @PostMapping
     public ResponseEntity<ArticleResponse> createArticle(

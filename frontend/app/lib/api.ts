@@ -156,3 +156,15 @@ export async function deleteAdminArticle(id: number, token: string): Promise<voi
   });
   if (!res.ok) throw new Error('Failed to delete article');
 }
+
+export async function searchArticles(query: string, page = 0, size = 12): Promise<any> {
+  const res = await apiFetch(`/api/articles/search?q=${encodeURIComponent(query)}&page=${page}&size=${size}`);
+  if (!res.ok) throw new Error('Failed to search articles');
+  return res.json();
+}
+
+export async function getArticlesByTopic(topicId: string | number, page = 0, size = 12): Promise<any> {
+  const res = await apiFetch(`/api/articles/topic/${topicId}?page=${page}&size=${size}`);
+  if (!res.ok) throw new Error('Failed to fetch articles by topic');
+  return res.json();
+}

@@ -14,6 +14,7 @@ export default [
     route("about", "routes/about.tsx"),
     route("emergency", "routes/emergency.tsx"),
     route("ai-tutorial", "routes/ai-tutorial.tsx"),
+    route("articles/topic/:id", "routes/articles.topic.$id.tsx"),
     route("articles/:id/:slug", "routes/article.tsx", { id: "article-with-slug" }),
     route("articles/:id", "routes/article.tsx", { id: "article-without-slug" }),
   ]),

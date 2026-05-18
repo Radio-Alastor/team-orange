@@ -34,6 +34,6 @@ urllib3==2.6.3
 uuid_utils==0.14.1
 xxhash==3.7.0
 zstandard==0.25.0
-fastapi>=0.115.0
-uvicorn[standard]>=0.30.0
-langchain-anthropic>=0.3.0
+fastapi==0.115.0
+uvicorn[standard]==0.30.0
+langchain-anthropic==0.3.0

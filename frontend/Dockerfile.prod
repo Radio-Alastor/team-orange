@@ -1,10 +1,5 @@
 FROM node:20-alpine AS base
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
-FROM base AS development-dependencies-env
-COPY . /app
-WORKDIR /app
-RUN pnpm install --frozen-lockfile
+RUN corepack enable && corepack prepare pnpm@9 --activate
 
 FROM base AS production-dependencies-env
 COPY ./package.json pnpm-lock.yaml /app/
@@ -15,14 +10,22 @@ FROM base AS build-env
 ARG VITE_API_URL=""
 ENV VITE_API_URL=$VITE_API_URL
 COPY . /app/
+# Need full dependencies for the build
+FROM base AS development-dependencies-env
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+FROM build-env AS builder
 COPY --from=development-dependencies-env /app/node_modules /app/node_modules
 WORKDIR /app
 RUN pnpm run build
 
-FROM base
-COPY ./package.json pnpm-lock.yaml /app/
+FROM base AS final
 COPY --from=production-dependencies-env /app/node_modules /app/node_modules
-COPY --from=build-env /app/build /app/build
+COPY --from=builder /app/build /app/build
+# Copy only package.json to run the start script
+COPY ./package.json /app/
 WORKDIR /app
 ENV PORT=5174
 EXPOSE 5174

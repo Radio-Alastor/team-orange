@@ -1,14 +1,9 @@
 import { redirect, Outlet, NavLink, Link } from "react-router";
-import { getToken, getUser, clearAuth } from "~/lib/auth";
+import { getToken, clearAuth, requireStaffUser } from "~/lib/auth";
+import { apiFetch } from "~/lib/api";
 
 export async function clientLoader() {
-  const token = getToken();
-  const user = getUser();
-
-  if (!token || !user?.staff) {
-    return redirect("/");
-  }
-
+  const { token, user } = await requireStaffUser();
   return { token, user };
 }
 

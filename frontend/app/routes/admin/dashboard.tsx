@@ -1,10 +1,9 @@
 import { redirect, useLoaderData } from "react-router";
 import { getAdminMetrics, getAdminUsers } from "~/lib/api";
-import { getToken } from "~/lib/auth";
+import { requireStaffUser } from "~/lib/auth";
 
 export async function clientLoader() {
-  const token = getToken();
-  if (!token) throw redirect("/login?reason=unauthorized");
+  const { token } = await requireStaffUser();
 
   try {
     const [metrics, users] = await Promise.all([

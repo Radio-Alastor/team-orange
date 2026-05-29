@@ -1,16 +1,18 @@
 import { Link, redirect, useLoaderData, useNavigate } from "react-router";
 import { apiFetch } from "../lib/api";
 import PageSpinner from "../components/PageSpinner";
-import { getToken, getUser } from "../lib/auth";
+import { getToken, getOptionalAuthUser } from "../lib/auth";
 import ChatWidget from "../components/ChatWidget";
 import LikeButton from "../components/LikeButton";
 import CommentSection from "../components/CommentSection";
 
 export async function clientLoader({ params }: { params: Record<string, string> }) {
   try {
+    const { user } = await getOptionalAuthUser();
     const res = await apiFetch(`/api/articles/${params.id}`);
     if (!res.ok) throw redirect("/articles");
-    return await res.json();
+    const article = await res.json();
+    return { article, user };
   } catch (e) {
     // If it's already a redirect Response, re-throw it
     if (e instanceof Response) throw e;
@@ -152,9 +154,8 @@ function blocksToText(blocks: Block[]): string {
 
 export default function ArticlePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const article = useLoaderData<any>();
+  const { article, user } = useLoaderData<any>();
   const navigate = useNavigate();
-  const user = getUser();
 
   let blocks: Block[] = [];
   try {
@@ -232,7 +233,7 @@ export default function ArticlePage() {
         </article>
       </div>
 
-      {getUser() && (
+      {user && (
         <ChatWidget articleTitle={article.title} articleContent={blocksToText(blocks)} />
       )}
     </>

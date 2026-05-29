@@ -60,10 +60,9 @@ export default function Articles() {
     <div className="container py-5">
       {/* Header */}
       <div className="text-center mb-5">
-        <h1 className="display-3 fw-bold mb-3">Learn &amp; Protect</h1>
+        <h1 className="display-3 fw-bold mb-3">Learn &amp; Protect Library</h1>
         <p className="lead text-muted mx-auto" style={{ maxWidth: "800px" }}>
-          Welcome to our library of guides. Whether you want to master new technology or learn how to stay safe
-          online, we have simple instructions to help you every step of the way.
+          Welcome to our complete library of guides from the beginning of time. Whether you want to master new technology or learn how to stay safe online, you can explore our entire collection here. Use the search bar or browse through the pages to easily find simple instructions to help you every step of the way.
         </p>
       </div>
 

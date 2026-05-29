@@ -2,23 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { redirect, useLoaderData, useNavigate } from "react-router";
 import PageSpinner from "../../components/PageSpinner";
 import { apiFetch } from "../../lib/api";
-import { getToken } from "../../lib/auth";
+import { getToken, requireStaffUser } from "../../lib/auth";
 import { DEFAULT_META, DEFAULT_DATA } from "./editorDefaults";
 import type { Topic } from "./types";
 import ArticleMetaForm from "./ArticleMetaForm";
 import BlockReference from "./BlockReference";
 
 export async function clientLoader({ request }: { request: Request }) {
-  const token = getToken();
-  if (!token) throw redirect("/login?reason=unauthorized");
-
-  const res = await apiFetch("/api/auth/me", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  if (!res.ok) throw redirect("/login?reason=expired");
-
-  const me = await res.json();
-  if (!me.staff) throw redirect("/login?reason=unauthorized");
+  const { token, user: me } = await requireStaffUser();
 
   let topics: Topic[] = [];
   try {

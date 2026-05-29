@@ -1,12 +1,11 @@
 import { redirect, useLoaderData, useNavigate } from "react-router";
 import { Link } from "react-router";
 import { getAdminArticles, updateArticleStatus, deleteAdminArticle } from "~/lib/api";
-import { getToken } from "~/lib/auth";
+import { requireStaffUser } from "~/lib/auth";
 import type { ArticleStatus } from "~/types/admin";
 
 export async function clientLoader({ request }: { request: Request }) {
-  const token = getToken();
-  if (!token) throw redirect("/login?reason=unauthorized");
+  const { token } = await requireStaffUser();
   
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get("page") || "0", 10);

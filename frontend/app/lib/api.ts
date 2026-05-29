@@ -13,25 +13,20 @@ const isBrowser = typeof window !== 'undefined';
  */
 async function attemptTokenRefresh(): Promise<string | null> {
   if (!isBrowser) return null;
-  const refreshToken = localStorage.getItem('sg_refresh_token');
-  if (!refreshToken) return null;
 
   try {
     const res = await fetch(`${API_BASE}/api/auth/refresh`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken }),
+      credentials: 'include', // The browser will string the HttpOnly cookie along
     });
     if (!res.ok) {
       // Refresh token is invalid or expired — clear everything
       localStorage.removeItem('sg_token');
-      localStorage.removeItem('sg_refresh_token');
       localStorage.removeItem('sg_user');
       return null;
     }
     const data = await res.json();
     localStorage.setItem('sg_token', data.token);
-    localStorage.setItem('sg_refresh_token', data.refreshToken);
     // Preserve existing user meta while updating staff flag in case it changed
     const stored = JSON.parse(localStorage.getItem('sg_user') ?? '{}');
     localStorage.setItem('sg_user', JSON.stringify({ ...stored, staff: data.staff }));

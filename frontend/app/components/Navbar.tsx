@@ -13,12 +13,10 @@ export default function Navbar() {
   }, [location]);
 
   async function handleLogout() {
-    const refreshToken = localStorage.getItem("sg_refresh_token");
     try {
       await fetch("/api/auth/logout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ refreshToken }),
+        credentials: "include",
       });
     } catch {
       // best-effort

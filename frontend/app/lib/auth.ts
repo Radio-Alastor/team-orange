@@ -3,7 +3,6 @@ import { apiFetch } from "./api";
 
 export interface AuthData {
   token: string;
-  refreshToken: string;
   userId: string;
   name: string;
   email: string;
@@ -13,12 +12,11 @@ export interface AuthData {
 const isBrowser = typeof window !== 'undefined';
 
 export const getToken = () => isBrowser ? localStorage.getItem('sg_token') : null;
-export const getUser = (): Omit<AuthData, 'token' | 'refreshToken'> | null =>
+export const getUser = (): Omit<AuthData, 'token'> | null =>
   isBrowser ? JSON.parse(localStorage.getItem('sg_user') ?? 'null') : null;
 
 export function setAuth(data: AuthData) {
   localStorage.setItem('sg_token', data.token);
-  localStorage.setItem('sg_refresh_token', data.refreshToken);
   localStorage.setItem('sg_user', JSON.stringify({
     userId: data.userId,
     name: data.name,
@@ -29,7 +27,6 @@ export function setAuth(data: AuthData) {
 
 export function clearAuth() {
   localStorage.removeItem('sg_token');
-  localStorage.removeItem('sg_refresh_token');
   localStorage.removeItem('sg_user');
 }
 

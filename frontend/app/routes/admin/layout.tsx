@@ -9,12 +9,10 @@ export async function clientLoader() {
 
 export default function AdminLayout() {
   const handleLogout = async () => {
-    const refreshToken = localStorage.getItem("sg_refresh_token");
     try {
       await fetch("/api/auth/logout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ refreshToken }),
+        credentials: "include",
       });
     } catch {
       // best-effort

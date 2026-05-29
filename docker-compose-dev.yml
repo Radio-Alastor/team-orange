@@ -33,6 +33,7 @@ services:
     environment:
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
+      SECURE_COOKIE: false
       # ... (rest of your backend env)
     depends_on:
       mysql:

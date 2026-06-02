@@ -104,14 +104,14 @@ export default function Navbar() {
                   >
                     <i className="bi bi-person-circle fs-4" />
                   </button>
-                  <button className="btn btn-outline-secondary btn-sm" onClick={handleLogout}>
+                  <button className="btn btn-outline-secondary" onClick={handleLogout}>
                     Log Out
                   </button>
                 </>
               ) : (
                 <>
-                  <Link className="btn btn-outline-primary btn-sm" to="/login">Sign In</Link>
-                  <Link className="btn btn-primary btn-sm" to="/register">Register</Link>
+                  <Link className="btn btn-outline-primary" to="/login">Sign In</Link>
+                  <Link className="btn btn-primary" to="/register">Register</Link>
                 </>
               )}
             </div>

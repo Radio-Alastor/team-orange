@@ -10,40 +10,40 @@ export interface TeamMember {
 }
 
 export const TEAM_MEMBERS: TeamMember[] = [
-  { 
-    img: "/imgs/ElderlyChristine.jpg", 
-    video: "/videos/OldChristineVid.mp4", 
-    name: "Christine", 
+  {
+    img: "/imgs/ElderlyChristine.jpg",
+    video: "/videos/OldChristineVid.mp4",
+    name: "Christine",
     role: "Lead Designer",
     portfolioUrl: "https://radio-alastor.github.io/christine-portfolio/",
     linkedinUrl: "https://www.linkedin.com/in/christine-portfolio/",
     githubUrl: "https://github.com/Radio-Alastor",
     bio: "I'm passionate about using my organisational skills with my technical abilities to improve efficiency and support people behind the scenes."
   },
-  { 
-    img: "/imgs/ElderlyEkHong.jpg", 
-    video: "/videos/OldEkHongVid.mp4", 
-    name: "Ek Hong", 
+  {
+    img: "/imgs/ElderlyEkHong.jpg",
+    video: "/videos/OldEkHongVid.mp4",
+    name: "Ek Hong",
     role: "Database expert",
     portfolioUrl: "https://krenova.github.io/krenova-portfolio/",
     linkedinUrl: "https://sg.linkedin.com/in/ekhong-lim",
     githubUrl: "https://github.com/krenova/",
-    bio: "With expertise in data, machine learning and agentic deveopment, I specialize in bridging the gap between complex technology and practical strategy. My approach combines a consulting mindset with a focus on building reliable systems that are practical yet prepared for the future."
+    bio: "Data Science and Technology Consultant."
   },
-  { 
-    img: "/imgs/ElderlyKelvin.jpg", 
-    video: "/videos/OldKelvinVid.mp4", 
-    name: "Kelvin", 
+  {
+    img: "/imgs/ElderlyKelvin.jpg",
+    video: "/videos/OldKelvinVid.mp4",
+    name: "Kelvin",
     role: "AI expert",
     portfolioUrl: "https://kelvinsu1983.github.io/kelvin-portfolio/",
     linkedinUrl: "https://www.linkedin.com/in/kelvin-su-59332515a/",
     githubUrl: "https://github.com/KelvinSu1983",
     bio: "Passionate about building SaaS solutions and AI systems for real-world problems, I bring a proven track record in high-performance sales and entrepreneurial ventures."
   },
-  { 
-    img: "/imgs/ElderlyKimShee.jpg", 
-    video: "/videos/OldKimSheeVid.mp4", 
-    name: "Kim Shee", 
+  {
+    img: "/imgs/ElderlyKimShee.jpg",
+    video: "/videos/OldKimSheeVid.mp4",
+    name: "Kim Shee",
     role: "Infrastructure expert",
     portfolioUrl: "https://kslee008.github.io/portfolio_v2",
     linkedinUrl: "https://www.linkedin.com/in/kim-shee-lee-b1378288/",

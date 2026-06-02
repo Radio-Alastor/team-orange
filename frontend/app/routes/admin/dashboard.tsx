@@ -28,26 +28,26 @@ export default function AdminDashboard() {
       {/* KPI Cards */}
       <div className="row mb-4">
         <div className="col-md-4">
-          <div className="card text-white bg-success mb-3">
+          <div className="card mb-3" style={{ backgroundColor: "var(--surface-sand)", border: "2px solid var(--primary-teal)", color: "var(--text-charcoal)" }}>
             <div className="card-body">
-              <h5 className="card-title"><i className="bi bi-people me-2"></i>Total Users</h5>
-              <h3 className="card-text">{metrics.totalUsers}</h3>
+              <h5 className="card-title"><i className="bi bi-people me-2" style={{ color: "var(--primary-teal)" }}></i>Total Users</h5>
+              <h3 className="card-text fw-bold">{metrics.totalUsers}</h3>
             </div>
           </div>
         </div>
         <div className="col-md-4">
-          <div className="card text-white bg-primary mb-3">
+          <div className="card mb-3" style={{ backgroundColor: "var(--surface-sand)", border: "2px solid var(--primary-teal)", color: "var(--text-charcoal)" }}>
             <div className="card-body">
-              <h5 className="card-title"><i className="bi bi-chat-dots me-2"></i>Total Comments</h5>
-              <h3 className="card-text">{metrics.totalComments}</h3>
+              <h5 className="card-title"><i className="bi bi-chat-dots me-2" style={{ color: "var(--primary-teal)" }}></i>Total Comments</h5>
+              <h3 className="card-text fw-bold">{metrics.totalComments}</h3>
             </div>
           </div>
         </div>
         <div className="col-md-4">
-          <div className="card text-white bg-danger mb-3">
+          <div className="card mb-3" style={{ backgroundColor: "var(--surface-sand)", border: "2px solid var(--secondary-coral)", color: "var(--text-charcoal)" }}>
             <div className="card-body">
-              <h5 className="card-title"><i className="bi bi-heart-fill me-2"></i>Total Likes</h5>
-              <h3 className="card-text">{metrics.totalLikes}</h3>
+              <h5 className="card-title"><i className="bi bi-heart-fill me-2" style={{ color: "var(--secondary-coral)" }}></i>Total Likes</h5>
+              <h3 className="card-text fw-bold">{metrics.totalLikes}</h3>
             </div>
           </div>
         </div>

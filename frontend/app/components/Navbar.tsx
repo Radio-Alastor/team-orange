@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router";
 import { getUser, clearAuth } from "../lib/auth";
 import ProfileModal from "./ProfileModal";
+import { useI18n } from "../i18n/I18nContext";
 
 export default function Navbar() {
+  const { t } = useI18n();
   const [user, setUser] = useState<ReturnType<typeof getUser>>(null);
   const [showProfile, setShowProfile] = useState(false);
   const location = useLocation();
@@ -39,7 +41,7 @@ export default function Navbar() {
             data-bs-target="#navbarMain"
             aria-controls="navbarMain"
             aria-expanded="false"
-            aria-label="Toggle navigation"
+            aria-label={t.nav.toggleNav}
           >
             <span className="navbar-toggler-icon" />
           </button>
@@ -51,7 +53,7 @@ export default function Navbar() {
                   to="/"
                   end
                 >
-                  Home
+                  {t.nav.home}
                 </NavLink>
               </li>
               <li className="nav-item">
@@ -59,7 +61,7 @@ export default function Navbar() {
                   className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
                   to="/articles"
                 >
-                  Learn
+                  {t.nav.learn}
                 </NavLink>
               </li>
               <li className="nav-item">
@@ -67,7 +69,7 @@ export default function Navbar() {
                   className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
                   to="/about"
                 >
-                  About
+                  {t.nav.about}
                 </NavLink>
               </li>
               {user?.staff && (
@@ -77,7 +79,7 @@ export default function Navbar() {
                       className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
                       to="/editor"
                     >
-                      Editor
+                      {t.nav.editor}
                     </NavLink>
                   </li>
                   <li className="nav-item">
@@ -85,7 +87,7 @@ export default function Navbar() {
                       className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
                       to="/admin"
                     >
-                      Admin
+                      {t.nav.admin}
                     </NavLink>
                   </li>
                 </>
@@ -93,25 +95,25 @@ export default function Navbar() {
             </ul>
             <div className="d-flex align-items-center gap-2">
               <Link className="text-danger fw-bold me-3 text-decoration-none" to="/emergency">
-                🚨 Help-Line
+                {t.nav.helpLine}
               </Link>
               {user ? (
                 <>
                   <button
                     className="btn btn-link p-0"
-                    title="Profile"
+                    title={t.nav.profile}
                     onClick={() => setShowProfile(true)}
                   >
                     <i className="bi bi-person-circle fs-4" />
                   </button>
                   <button className="btn btn-outline-secondary btn-sm" onClick={handleLogout}>
-                    Log Out
+                    {t.nav.logOut}
                   </button>
                 </>
               ) : (
                 <>
-                  <Link className="btn btn-outline-primary btn-sm" to="/login">Sign In</Link>
-                  <Link className="btn btn-primary btn-sm" to="/register">Register</Link>
+                  <Link className="btn btn-outline-primary btn-sm" to="/login">{t.nav.signIn}</Link>
+                  <Link className="btn btn-primary btn-sm" to="/register">{t.nav.register}</Link>
                 </>
               )}
             </div>

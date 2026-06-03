@@ -1,24 +1,24 @@
 import { Link } from "react-router";
+import { useI18n } from "../i18n/I18nContext";
 
 export default function Emergency() {
+  const { t } = useI18n();
+
   return (
     <main className="container py-5">
       <div className="text-center mb-5">
-        <h1 className="display-4 fw-bold text-danger">Emergency Help</h1>
-        <p className="lead">
-          If you think you have been scammed, <strong>stay calm</strong> and follow these steps immediately.
-        </p>
+        <h1 className="display-4 fw-bold text-danger">{t.emergency.title}</h1>
+        <p className="lead">{t.emergency.lead}</p>
       </div>
 
       <div className="row g-4 justify-content-center">
-        {/* Step 1 */}
         <div className="col-md-8">
           <div className="emergency-card shadow-lg mb-4">
             <div className="d-flex align-items-center mb-3">
               <div className="step-number">1</div>
-              <h2 className="h4 mb-0 fw-bold">Call Your Bank Immediately</h2>
+              <h2 className="h4 mb-0 fw-bold">{t.emergency.step1Title}</h2>
             </div>
-            <p>Ask them to <strong>freeze your accounts</strong> and credit cards. Do this even if you aren't sure yet.</p>
+            <p>{t.emergency.step1Body}</p>
             <div className="row g-2">
               <a href="tel:18003396963" className="col-6 col-md-3 text-black text-decoration-none">
                 <div className="bank-contact text-center small"><strong>DBS/POSB</strong><br />1800 339 6963</div>
@@ -36,34 +36,32 @@ export default function Emergency() {
           </div>
         </div>
 
-        {/* Step 2 */}
         <div className="col-md-8">
           <div className="emergency-card shadow-lg mb-4">
             <div className="d-flex align-items-center mb-3">
               <div className="step-number">2</div>
-              <h2 className="h4 mb-0 fw-bold">Call the Anti-Scam Hotline</h2>
+              <h2 className="h4 mb-0 fw-bold">{t.emergency.step2Title}</h2>
             </div>
-            <p>Get expert advice from the police on what to do next.</p>
-            <a href="tel:18007226688" className="btn btn-danger btn-lg w-100 fw-bold py-3 mb-2">Call 1800-722-6688</a>
-            <p className="text-muted small text-center">Available 24/7 for scam reports.</p>
+            <p>{t.emergency.step2Body}</p>
+            <a href="tel:18007226688" className="btn btn-danger btn-lg w-100 fw-bold py-3 mb-2">{t.emergency.step2Call}</a>
+            <p className="text-muted small text-center">{t.emergency.step2Availability}</p>
           </div>
         </div>
 
-        {/* Step 3 */}
         <div className="col-md-8">
           <div className="emergency-card shadow-lg mb-4">
             <div className="d-flex align-items-center mb-3">
               <div className="step-number">3</div>
-              <h2 className="h4 mb-0 fw-bold">Make a Police Report</h2>
+              <h2 className="h4 mb-0 fw-bold">{t.emergency.step3Title}</h2>
             </div>
-            <p>Go to the nearest Neighborhood Police Center or report online.</p>
-            <a href="https://www.police.gov.sg/e-services" target="_blank" rel="noreferrer" className="btn btn-outline-danger w-100">Submit Online Report</a>
+            <p>{t.emergency.step3Body}</p>
+            <a href="https://www.police.gov.sg/e-services" target="_blank" rel="noreferrer" className="btn btn-outline-danger w-100">{t.emergency.step3Button}</a>
           </div>
         </div>
       </div>
 
       <div className="text-center mt-5">
-        <Link to="/" className="btn btn-secondary rounded-pill px-5">Back to Home</Link>
+        <Link to="/" className="btn btn-secondary rounded-pill px-5">{t.emergency.backHome}</Link>
       </div>
     </main>
   );

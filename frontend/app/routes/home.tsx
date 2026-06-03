@@ -3,6 +3,7 @@ import { Link, useLoaderData } from "react-router";
 import { apiFetch } from "../lib/api";
 import PageSpinner from "../components/PageSpinner";
 import ArticleCard, { type SharedArticleDTO } from "../components/ArticleCard";
+import { useI18n } from "../i18n/I18nContext";
 
 export function meta() {
   return [
@@ -30,13 +31,14 @@ export function HydrateFallback() {
   return <PageSpinner />;
 }
 
-const TABS = ["Technology Basics", "Scam Awareness"] as const;
+type HomeTab = "tech" | "scam";
 
 export default function Home() {
+  const { t } = useI18n();
   const { tech, scam } = useLoaderData<typeof clientLoader>();
-  const [activeTab, setActiveTab] = useState<(typeof TABS)[number]>("Technology Basics");
+  const [activeTab, setActiveTab] = useState<HomeTab>("tech");
 
-  const activeArticles = activeTab === "Technology Basics" ? tech : scam;
+  const activeArticles = activeTab === "tech" ? tech : scam;
 
   return (
     <>
@@ -47,7 +49,7 @@ export default function Home() {
             <img
               src="/imgs/herobanner-img.jpeg"
               className="d-block mx-lg-auto img-fluid rounded-4 shadow-lg border border-2 border-dark"
-              alt="an elderly woman smiling and using her smartphone"
+              alt={t.home.heroAlt}
               width={700}
               height={500}
               loading="lazy"
@@ -58,20 +60,20 @@ export default function Home() {
               className="badge rounded-pill px-3 py-2 mb-3 d-inline-block text-uppercase fw-bold"
               style={{ backgroundColor: '#dfff6f', color: '#1a1a1a', border: '1px solid #1a1a1a', fontSize: '0.85rem' }}
             >
-              Welcome to Silver Guide
+              {t.home.badge}
             </span>
             <h1 className="display-4 fw-bold text-body-emphasis lh-sm mb-3">
-              Embrace the Digital World with Confidence
+              {t.home.title}
             </h1>
             <p className="lead fs-5 text-secondary mb-4" style={{ lineHeight: "1.6" }}>
-              At Silver Guide, we make learning technology simple, safe, and fun. Explore our easy, step-by-step guides on using smartphones, staying connected with family, and recognizing online scams.
+              {t.home.lead}
             </p>
             <div className="d-grid gap-3 d-md-flex justify-content-md-start">
               <a href="#learning-section" className="btn btn-primary btn-lg px-4 py-3 rounded-pill fw-bold shadow-sm">
-                Start Learning <i className="bi bi-arrow-down-short ms-1"></i>
+                {t.home.startLearning} <i className="bi bi-arrow-down-short ms-1"></i>
               </a>
               <Link to="/emergency" className="btn btn-outline-danger btn-lg px-4 py-3 rounded-pill fw-bold shadow-sm">
-                🚨 Emergency Help-Line
+                {t.home.emergencyHelpLine}
               </Link>
             </div>
           </div>
@@ -80,10 +82,10 @@ export default function Home() {
 
       {/* Start learning section */}
       <div id="learning-section" className="px-4 pt-5 pb-2 my-5 text-center">
-        <h2 className="display-5 fw-bold text-body-emphasis">Latest Articles</h2>
+        <h2 className="display-5 fw-bold text-body-emphasis">{t.home.latestArticles}</h2>
         <div className="col-lg-6 mx-auto">
           <p className="lead text-secondary mb-4">
-            Discover our newest, most up-to-date guides. Select a category below to browse the latest clear, jargon-free articles designed specifically for seniors.
+            {t.home.latestArticlesLead}
           </p>
         </div>
       </div>
@@ -92,24 +94,24 @@ export default function Home() {
       <div className="container mb-4">
         <div className="d-flex justify-content-center">
           <ul className="nav nav-pills p-1 bg-white border border-dark rounded-pill shadow-sm" style={{ maxWidth: 'fit-content' }}>
-            {TABS.map((tab) => (
+            {(["tech", "scam"] as const).map((tab) => (
               <li key={tab} className="nav-item">
                 <button
                   type="button"
                   className={`nav-link rounded-pill px-4 py-2 fw-bold d-flex align-items-center ${
-                    activeTab === tab 
-                      ? 'active bg-primary text-white' 
+                    activeTab === tab
+                      ? 'active bg-primary text-white'
                       : 'text-dark bg-transparent'
                   }`}
                   onClick={() => setActiveTab(tab)}
                   style={{ transition: 'all 0.2s ease-in-out', border: 'none' }}
                 >
-                  {tab === "Technology Basics" ? (
+                  {tab === "tech" ? (
                     <i className="bi bi-phone-vibrate me-2 fs-5"></i>
                   ) : (
                     <i className="bi bi-shield-lock-fill me-2 fs-5"></i>
                   )}
-                  {tab}
+                  {tab === "tech" ? t.home.tabTech : t.home.tabScam}
                 </button>
               </li>
             ))}
@@ -117,7 +119,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Cards */}
+      {/* Cards — article content stays in original language */}
       <div className="album pb-5">
         <div className="container">
           {activeArticles.length > 0 ? (
@@ -129,18 +131,18 @@ export default function Home() {
               </div>
               <div className="text-center mt-5">
                 <Link
-                  to={activeTab === "Technology Basics" ? "/articles/topic/1" : "/articles/topic/2"}
+                  to={activeTab === "tech" ? "/articles/topic/1" : "/articles/topic/2"}
                   className="btn btn-outline-primary btn-lg rounded-pill px-5 fw-bold shadow-sm animate-button"
                 >
-                  View All {activeTab} Guides &rarr;
+                  {activeTab === "tech" ? t.home.viewAllTech : t.home.viewAllScam}
                 </Link>
               </div>
             </>
           ) : (
             <div className="text-center py-5 text-muted bg-white border border-dark rounded-4 p-5 shadow-sm" style={{ maxWidth: '500px', margin: '0 auto' }}>
               <i className="bi bi-journal-x fs-1 text-secondary mb-3 d-block"></i>
-              <h5 className="fw-bold">No guides available right now</h5>
-              <p className="small mb-0 text-secondary">We are currently creating new tutorials. Please check back later!</p>
+              <h5 className="fw-bold">{t.home.noGuidesTitle}</h5>
+              <p className="small mb-0 text-secondary">{t.home.noGuidesBody}</p>
             </div>
           )}
         </div>
@@ -149,27 +151,26 @@ export default function Home() {
       {/* Emergency Helpline Section */}
       <div className="container my-5 pb-5">
         <div className="p-4 p-md-5 rounded-5 border border-2 border-danger shadow-sm bg-white position-relative overflow-hidden">
-          {/* Subtle background emergency icon */}
           <div className="position-absolute end-0 bottom-0 opacity-10 d-none d-lg-block" style={{ transform: 'translate(10%, 10%)', pointerEvents: 'none' }}>
             <i className="bi bi-shield-fill-exclamation" style={{ fontSize: '15rem', color: '#dc3545' }}></i>
           </div>
-          
+
           <div className="row align-items-center position-relative" style={{ zIndex: 1 }}>
             <div className="col-lg-8 mb-4 mb-lg-0">
               <div className="d-flex align-items-center mb-3 flex-wrap gap-2">
                 <span className="badge bg-danger rounded-pill px-3 py-2 text-white fw-bold me-2">
-                  <i className="bi bi-exclamation-triangle-fill me-1"></i> EMERGENCY HELP
+                  <i className="bi bi-exclamation-triangle-fill me-1"></i> {t.home.emergencyBadge}
                 </span>
-                <h3 className="fw-bold m-0 text-danger">Think you have been scammed?</h3>
+                <h3 className="fw-bold m-0 text-danger">{t.home.emergencyTitle}</h3>
               </div>
-              <h4 className="fw-bold mb-3">Don't panic. We are here to help you step-by-step.</h4>
+              <h4 className="fw-bold mb-3">{t.home.emergencySubtitle}</h4>
               <p className="lead mb-0 text-secondary" style={{ maxWidth: '750px', fontSize: '1.1rem' }}>
-                If you gave away your banking details, OTP, or transferred money to someone suspicious, follow our immediate security checklist. Freeze your accounts and contact the Anti-Scam Hotline.
+                {t.home.emergencyBody}
               </p>
             </div>
             <div className="col-lg-4 text-lg-end">
               <Link to="/emergency" className="btn btn-danger btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg w-100 w-lg-auto">
-                <i className="bi bi-telephone-fill me-2"></i> Get Scam Help Now
+                <i className="bi bi-telephone-fill me-2"></i> {t.home.getScamHelp}
               </Link>
             </div>
           </div>

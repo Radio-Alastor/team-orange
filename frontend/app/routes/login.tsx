@@ -2,32 +2,37 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import { apiFetch } from "../lib/api";
 import { setAuth } from "../lib/auth";
+import { useI18n } from "../i18n/I18nContext";
 
 export function meta() {
   return [{ title: "Silver Guide - Sign In" }];
 }
 
+type LoginErrorKey = "invalidCredentials" | "generic" | "network";
+type LoginInfoKey = "expired" | "unauthorized";
+
 export default function Login() {
+  const { t } = useI18n();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [infoMessage, setInfoMessage] = useState<string | null>(null);
+  const [errorKey, setErrorKey] = useState<LoginErrorKey | null>(null);
+  const [infoKey, setInfoKey] = useState<LoginInfoKey | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const reason = searchParams.get("reason");
     if (reason === "expired") {
-      setInfoMessage("Your session has expired. Please log in again to continue.");
+      setInfoKey("expired");
     } else if (reason === "unauthorized") {
-      setInfoMessage("You must be logged in to view that page.");
+      setInfoKey("unauthorized");
     }
   }, [searchParams]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
+    setErrorKey(null);
     setIsLoading(true);
 
     try {
@@ -41,12 +46,12 @@ export default function Login() {
         setAuth(data);
         navigate("/");
       } else if (res.status === 401) {
-        setError("Invalid email or password.");
+        setErrorKey("invalidCredentials");
       } else {
-        setError("Something went wrong. Please try again.");
+        setErrorKey("generic");
       }
     } catch {
-      setError("Could not connect to the server. Please check your connection.");
+      setErrorKey("network");
     } finally {
       setIsLoading(false);
     }
@@ -57,14 +62,11 @@ export default function Login() {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-12 col-sm-10 col-md-8 col-lg-5">
-            {/* Back button */}
             <Link to="/" className="btn btn-outline-secondary btn-sm mb-3">
-              &larr; Back to Home
+              {t.login.backHome}
             </Link>
 
-            {/* Card */}
             <div className="bg-white p-5" style={{ borderRadius: '2rem', boxShadow: '0 1rem 3rem rgba(0,0,0,0.05)' }}>
-              {/* Logo + Heading */}
               <div className="text-center mb-4">
                 <Link to="/">
                   <img src="/imgs/logo.svg" alt="SilverGuide Logo" width={64} height={64} className="mx-auto d-block" />
@@ -72,52 +74,48 @@ export default function Login() {
                 <h3 className="fw-bold mt-3 mb-0">Silver Guide</h3>
               </div>
 
-              {/* Section title with lime accent */}
               <div className="mb-4" style={{ borderLeft: '5px solid #dfff6f', paddingLeft: '1rem' }}>
-                <h5 className="fw-bold mb-1">Welcome Back</h5>
-                <p className="text-muted mb-0">Sign in to your account</p>
+                <h5 className="fw-bold mb-1">{t.login.welcomeBack}</h5>
+                <p className="text-muted mb-0">{t.login.signInSubtitle}</p>
               </div>
 
-              {/* Info alert for redirect reasons */}
-              {infoMessage && (
+              {infoKey && (
                 <div className="alert alert-info alert-dismissible" role="alert">
-                  {infoMessage}
-                  <button type="button" className="btn-close" onClick={() => setInfoMessage(null)} aria-label="Close" />
+                  {t.login.info[infoKey]}
+                  <button type="button" className="btn-close" onClick={() => setInfoKey(null)} aria-label={t.login.close} />
                 </div>
               )}
 
-              {/* Error alert */}
-              {error && (
+              {errorKey && (
                 <div className="alert alert-danger alert-dismissible" role="alert">
-                  {error}
-                  <button type="button" className="btn-close" onClick={() => setError(null)} aria-label="Close" />
+                  {t.login.errors[errorKey]}
+                  <button type="button" className="btn-close" onClick={() => setErrorKey(null)} aria-label={t.login.close} />
                 </div>
               )}
 
-              {/* Login Form */}
               <form onSubmit={handleSubmit} noValidate>
                 <div className="mb-3">
-                  <label htmlFor="email" className="form-label fw-bold">Email address</label>
+                  <label htmlFor="email" className="form-label fw-bold">{t.login.emailLabel}</label>
                   <input
                     type="email"
                     id="email"
                     className="form-control form-control-lg"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@example.com"
+                    placeholder={t.login.emailPlaceholder}
                     required
                     autoComplete="email"
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="password" className="form-label fw-bold">Password</label>
+                  <label htmlFor="password" className="form-label fw-bold">{t.login.passwordLabel}</label>
                   <input
                     type="password"
                     id="password"
                     className="form-control form-control-lg"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
+                    placeholder={t.login.passwordPlaceholder}
                     required
                     autoComplete="current-password"
                   />
@@ -128,7 +126,7 @@ export default function Login() {
                   disabled={isLoading}
                   className="btn btn-primary btn-lg w-100 mt-2"
                 >
-                  {isLoading ? "Signing in…" : "Sign In"}
+                  {isLoading ? t.login.signingIn : t.login.signIn}
                   {isLoading && (
                     <span className="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true" />
                   )}
@@ -136,11 +134,10 @@ export default function Login() {
               </form>
             </div>
 
-            {/* Register link */}
             <p className="text-center mt-4 text-muted">
-              Don't have an account?{" "}
+              {t.login.noAccount}{" "}
               <Link to="/register" className="fw-bold text-decoration-none">
-                Register &rarr;
+                {t.login.registerLink}
               </Link>
             </p>
           </div>

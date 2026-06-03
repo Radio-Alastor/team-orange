@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-z62lBz06.js";var t=e();function n(){return(0,t.jsx)(`div`,{className:`container py-5 text-center text-muted`,children:(0,t.jsx)(`div`,{className:`spinner-border text-primary`,role:`status`,children:(0,t.jsx)(`span`,{className:`visually-hidden`,children:`Loading…`})})})}export{n as t};

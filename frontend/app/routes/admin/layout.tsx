@@ -71,7 +71,7 @@ export default function AdminLayout() {
         <div className="row min-vh-100">
           <nav className="col-md-3 col-lg-2 d-none d-md-block static-sidebar px-0 bg-success">
             <div className="position-sticky pt-3">
-              <Link to="/admin">
+              <Link to="/">
                 <img src="/imgs/logo.svg" className="mx-auto d-block mb-4" width="134" height="80" alt="logo in static" />
               </Link>
               <ul className="nav flex-column">
@@ -87,7 +87,7 @@ export default function AdminLayout() {
                 </li>
                 <li className="nav-item mt-5 pt-3 border-top border-light border-opacity-25 mx-3">
                   <Link className="nav-link text-white-50" to="/">
-                    <i className="bi bi-house me-2"></i> Live Site
+                    <i className="bi bi-house me-2"></i> Home Page
                   </Link>
                 </li>
                 <li className="nav-item mx-3">

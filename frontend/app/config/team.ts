@@ -25,6 +25,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     portfolioUrl: "https://krenova.github.io/krenova-portfolio/",
     linkedinUrl: "https://sg.linkedin.com/in/ekhong-lim",
     githubUrl: "https://github.com/krenova/",
+    bio: "Data & Technology Consultant."
   },
   {
     id: "kelvin",

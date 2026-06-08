@@ -31,7 +31,7 @@ export default function AdminDashboard() {
           <div className="card text-white bg-success mb-3">
             <div className="card-body">
               <h5 className="card-title"><i className="bi bi-people me-2"></i>Total Users</h5>
-              <h3 className="card-text">{metrics.totalUsers}</h3>
+              <h3 className="card-text fw-bold">{metrics.totalUsers}</h3>
             </div>
           </div>
         </div>
@@ -39,7 +39,7 @@ export default function AdminDashboard() {
           <div className="card text-white bg-primary mb-3">
             <div className="card-body">
               <h5 className="card-title"><i className="bi bi-chat-dots me-2"></i>Total Comments</h5>
-              <h3 className="card-text">{metrics.totalComments}</h3>
+              <h3 className="card-text fw-bold">{metrics.totalComments}</h3>
             </div>
           </div>
         </div>
@@ -47,7 +47,7 @@ export default function AdminDashboard() {
           <div className="card text-white bg-danger mb-3">
             <div className="card-body">
               <h5 className="card-title"><i className="bi bi-heart-fill me-2"></i>Total Likes</h5>
-              <h3 className="card-text">{metrics.totalLikes}</h3>
+              <h3 className="card-text fw-bold">{metrics.totalLikes}</h3>
             </div>
           </div>
         </div>
